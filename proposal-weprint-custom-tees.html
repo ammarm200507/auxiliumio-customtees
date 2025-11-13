@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weprint Custom Tees Proposal — Auxilium.io</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-dark: #04060a;
+        --bg-darker: #020308;
+        --bg-card: rgba(12, 18, 27, 0.72);
+        --bg-card-solid: #111927;
+        --text-primary: #f5f8fc;
+        --text-secondary: #c2c8d6;
+        --text-muted: #97a1b5;
+        --accent: #5b8def;
+        --accent-soft: rgba(91, 141, 239, 0.15);
+        --border: rgba(255, 255, 255, 0.08);
+        --success: #3cd67a;
+        --warning: #f6c66b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: radial-gradient(circle at top left, rgba(91, 141, 239, 0.15), transparent 45%),
+          radial-gradient(circle at 80% 0%, rgba(60, 214, 122, 0.15), transparent 40%),
+          var(--bg-dark);
+        color: var(--text-primary);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .page {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 72px 32px 96px;
+      }
+
+      header {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        margin-bottom: 64px;
+      }
+
+      header .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 12px 20px;
+        font-size: 14px;
+        color: var(--text-secondary);
+      }
+
+      header .badge span {
+        display: inline-flex;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), #8f70ff);
+      }
+
+      header h1 {
+        font-size: clamp(36px, 5vw, 56px);
+        font-weight: 700;
+        margin: 0;
+        line-height: 1.05;
+      }
+
+      header h1 .highlight {
+        color: var(--accent);
+      }
+
+      header p {
+        margin: 0;
+        font-size: 20px;
+        color: var(--text-secondary);
+        max-width: 640px;
+      }
+
+      .meta-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+
+      .meta-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .meta-card span {
+        color: var(--text-muted);
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+
+      .meta-card strong {
+        font-size: 17px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      section {
+        margin-top: 80px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      section h2 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 600;
+      }
+
+      section > p {
+        margin: 0;
+        color: var(--text-secondary);
+        max-width: 720px;
+      }
+
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
+      }
+
+      .card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .card h3 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      .card p,
+      .card ul,
+      .card li {
+        margin: 0;
+        color: var(--text-secondary);
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      .card ul {
+        padding-left: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .card .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        border-radius: 999px;
+        padding: 6px 14px;
+        font-size: 13px;
+        font-weight: 500;
+      }
+
+      .list-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .list-stack .item {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 22px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .list-stack .item strong {
+        font-size: 17px;
+        font-weight: 600;
+      }
+
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .pill-row span {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 8px 16px;
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+
+      .timeline {
+        display: grid;
+        gap: 16px;
+      }
+
+      .timeline-card {
+        background: linear-gradient(135deg, rgba(91, 141, 239, 0.18), rgba(17, 25, 39, 0.9));
+        border: 1px solid rgba(91, 141, 239, 0.35);
+        border-radius: 18px;
+        padding: 26px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .timeline-card strong {
+        font-size: 28px;
+        font-weight: 600;
+      }
+
+      .pricing-card {
+        background: linear-gradient(150deg, rgba(17, 25, 39, 0.95), rgba(12, 18, 27, 0.85));
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 22px;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .pricing-card h3 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 600;
+      }
+
+      .pricing-divider {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .pricing-details {
+        display: grid;
+        gap: 14px;
+        color: var(--text-secondary);
+        font-size: 15px;
+      }
+
+      .next-steps {
+        counter-reset: steps;
+        display: grid;
+        gap: 18px;
+      }
+
+      .next-steps li {
+        list-style: none;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 22px 24px;
+        color: var(--text-secondary);
+        position: relative;
+      }
+
+      .next-steps li::before {
+        counter-increment: steps;
+        content: counter(steps);
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), #8f70ff);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-right: 16px;
+      }
+
+      footer {
+        margin-top: 80px;
+        padding-top: 40px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        color: var(--text-muted);
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          padding: 56px 20px 72px;
+        }
+
+        header {
+          gap: 20px;
+        }
+
+        header p {
+          font-size: 18px;
+        }
+
+        section {
+          margin-top: 64px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="badge">
+          <span></span>
+          Weprint Custom Tees & Auxilium.io
+        </div>
+        <h1>
+          Advanced AI Integration & Multi-Channel Growth for
+          <span class="highlight">Chris Printshop</span>
+        </h1>
+        <p>
+          Phased roadmap to integrate AI-driven customization, accelerate organic reach, and expand
+          nationwide sales channels while keeping your operations unified and manageable.
+        </p>
+        <div class="meta-grid">
+          <div class="meta-card">
+            <span>Proposal</span>
+            <strong>Phase 1 Launch + Strategic Roadmap</strong>
+          </div>
+          <div class="meta-card">
+            <span>Prepared For</span>
+            <strong>Chris Printshop (Weprint Custom Tees)</strong>
+          </div>
+          <div class="meta-card">
+            <span>Prepared By</span>
+            <strong>Auxilium.io</strong>
+          </div>
+          <div class="meta-card">
+            <span>Date</span>
+            <strong>November 12, 2025</strong>
+          </div>
+        </div>
+      </header>
+
+      <section>
+        <h2>Core Objective</h2>
+        <p>
+          Establish Chris Printshop as the go-to, nationwide partner for custom apparel by embedding
+          AI image generation into your current experience, strengthening organic discoverability,
+          and scaling sales across new marketplaces without compromising control.
+        </p>
+      </section>
+
+      <section>
+        <h2>Why Auxilium.io</h2>
+        <div class="card-grid">
+          <div class="card">
+            <div class="tag">Delivery</div>
+            <h3>Code Ownership, No Lock-In</h3>
+            <p>
+              We ship clean, maintainable code that your team fully owns on day one—no gated
+              tooling, no hidden platforms.
+            </p>
+          </div>
+          <div class="card">
+            <div class="tag">Partnership</div>
+            <h3>In-Your-Time-Zone Support</h3>
+            <p>
+              Houston-based team aligned to your schedule for fast communication, clear project
+              cadence, and accountable follow-through.
+            </p>
+          </div>
+          <div class="card">
+            <div class="tag">Quality</div>
+            <h3>AI, SEO & Commerce Expertise</h3>
+            <p>
+              Proven delivery of AI-enabled experiences, nationwide organic ranking strategies, and
+              marketplace integrations that scale.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Phase 1 — Foundation & Core Integration</h2>
+        <div class="card-grid">
+          <div class="card">
+            <h3>AI Image Generation in Customizer</h3>
+            <p>
+              Audit your current product customizer and implement an <strong>AI Generate</strong>
+              workflow inside the existing UI. Customers can ideate, preview, and apply artwork
+              without leaving the purchase path.
+            </p>
+            <ul>
+              <li>Evaluate watermark-free, commercial-use AI models and licensing</li>
+              <li>Prototype UX for prompt input, image selection, and garment placement</li>
+              <li>Modify plugin or craft lightweight integration to support image layering</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Site Optimization & Service Positioning</h3>
+            <p>
+              Extend your existing website with high-impact polish—clear services, updated visuals,
+              and conversion-led messaging for screen printing, embroidery, and DTG.
+            </p>
+            <ul>
+              <li>Content and CTA refresh anchored to your nationwide value proposition</li>
+              <li>Performance and accessibility tune-up for faster browsing</li>
+              <li>Embed AI-powered hero and showcase modules to spotlight innovation</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Google Business Profile Launch</h3>
+            <p>
+              Stand up and optimize GBP to capture local and regional demand, ensuring consistent
+              NAP data, service areas, and visual assets.
+            </p>
+            <ul>
+              <li>Verification support, keyword-rich descriptions, and service highlights</li>
+              <li>Posts cadence to reinforce AI-enabled offerings</li>
+              <li>Tracking set-up for calls, clicks, and direction requests</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Automated Review Flywheel</h3>
+            <p>
+              Deliver a review request system tuned to call-in and in-person customers using QR
+              inserts, SMS/email nudges, and Wave invoice prompts.
+            </p>
+            <ul>
+              <li>Design print collateral with QR codes tied to Google reviews</li>
+              <li>Embed frictionless review prompts into Wave payment experiences</li>
+              <li>Dashboard visibility into review velocity and response cadence</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Phase 2 — Organic Go-To-Market & Multi-Channel Expansion</h2>
+        <div class="card-grid">
+          <div class="card">
+            <h3>Organic SEO Engine</h3>
+            <p>
+              Build a deep content strategy covering buyer personas, nationwide verticals, and
+              technical schema to rank across AI-enhanced print searches.
+            </p>
+            <ul>
+              <li>Keyword clusters for screen printing, DTG, embroidery, and AI customization</li>
+              <li>Editorial calendar for blogs, FAQs, and long-form guides</li>
+              <li>Technical SEO (core vitals, structured data, sitemap cadence)</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Marketplace Expansion Playbook</h3>
+            <p>
+              Structure your catalog for TikTok Shop, Google Shopping, and Amazon with unified data
+              governance and creative guidelines.
+            </p>
+            <ul>
+              <li>Listing optimization templates and AI-driven creative prompts</li>
+              <li>Channel-specific compliance (brand registry, tax, fulfillment)</li>
+              <li>Performance dashboards consolidating channel metrics</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Content Strategy & Creative Support</h3>
+            <p>
+              Provide campaign ideas, scripts, and prompts while your team retains creative control.
+              Align every asset with SEO and brand authority goals.
+            </p>
+            <ul>
+              <li>Monthly creative sync for campaigns and seasonal pushes</li>
+              <li>Shared storyboard and asset checklist for internal production</li>
+              <li>AI prompt library for rapid mockups and concept art</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Phase 3 — Operational Streamlining (Future Consideration)</h2>
+        <div class="card-grid">
+          <div class="card">
+            <h3>Unified Order Aggregation</h3>
+            <p>
+              Evaluate OMS integrations or custom middleware to centralize orders across your site,
+              TikTok Shop, Google, Amazon, and offline intake.
+            </p>
+            <ul>
+              <li>Requirements gathering with your fulfillment and production leads</li>
+              <li>System comparison (e.g., Order Desk, SKUs IQ, custom Node/NetSuite bridge)</li>
+              <li>Automation roadmap for invoicing, art approvals, and status updates</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>AI-Driven Internal Efficiencies</h3>
+            <p>
+              Layer AI copilot tools for artwork proofing, job ticketing, and production scheduling
+              once multi-channel demand scales.
+            </p>
+            <ul>
+              <li>Automated art rejection criteria and proof versioning</li>
+              <li>Predictive scheduling tied to production capacity</li>
+              <li>Inventory sync with supplier lead-time intelligence</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Timeline (Expedited)</h2>
+        <div class="timeline">
+          <div class="timeline-card">
+            <strong>5–7 Days</strong>
+            <p>
+              Technical audit, AI customizer prototype, GBP setup, initial review collateral design.
+            </p>
+          </div>
+          <div class="timeline-card">
+            <strong>7–10 Days</strong>
+            <p>
+              AI integration merged, website optimizations live, SEO/marketplace foundations in
+              motion, automated review system deployed.
+            </p>
+          </div>
+          <div class="timeline-card">
+            <strong>2–3 Days</strong>
+            <p>
+              Final asset swaps, QA, training session, and go-live polish ahead of review/launch
+              cadence.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Phase 1 Definition of Done</h2>
+        <div class="list-stack">
+          <div class="item">
+            <strong>AI Customizer Ready for Customers</strong>
+            <p>
+              AI Generate button live within the existing product customizer, commercial-use model
+              confirmed, training content delivered, and analytics tied to usage.
+            </p>
+          </div>
+          <div class="item">
+            <strong>Website & GBP Optimized</strong>
+            <p>
+              Updated copy, visuals, and CTAs across key pages with Lighthouse, accessibility, and
+              schema checks completed; GBP verified and enhanced.
+            </p>
+          </div>
+          <div class="item">
+            <strong>Review Engine Live</strong>
+            <p>
+              QR collateral delivered, Wave invoice prompts activated, and dashboard tracking review
+              submissions and responses.
+            </p>
+          </div>
+          <div class="item">
+            <strong>Phase 2 Roadmap Aligned</strong>
+            <p>
+              SEO content calendar, marketplace integration checklist, and creative collaboration
+              framework confirmed.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Investment</h2>
+        <div class="pricing-card">
+          <h3>Phase 1 — Foundation & Core Integration</h3>
+          <div class="pricing-details">
+            <div><strong>$4,500</strong> fixed project fee (expedited timeline included)</div>
+            <div>
+              Includes AI customizer integration, website optimization, GBP launch, and automated
+              review system with one revision cycle post-launch.
+            </div>
+          </div>
+          <div class="pricing-divider"></div>
+          <div class="pricing-details">
+            <div><strong>Phase 2 & Phase 3</strong> scoped post-launch based on priorities.</div>
+            <div>
+              Optional Auxilium Care plan for proactive updates, SEO tuning, and content support
+              available starting at <strong>$1,200/month</strong>.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Next Steps</h2>
+        <ol class="next-steps">
+          <li>Confirm Phase 1 scope, pricing, and expedited timeline.</li>
+          <li>Share current site assets, customizer details, and platform credentials.</li>
+          <li>Kickoff call to align AI workflow, SEO roadmap, and marketplace priorities.</li>
+          <li>Schedule live training and set up shared dashboards for launch tracking.</li>
+          <li>Review final deliverables, approve go-live, and select ongoing support plan.</li>
+        </ol>
+      </section>
+
+      <footer>
+        <div>Auxilium.io — Houston, Texas</div>
+        <div>getstarted@auxilium.io</div>
+        <div>Proposal valid for 5 business days | Version 1.0 | Project ID: WCT-2025-P1</div>
+      </footer>
+    </div>
+  </body>
+</html>
+
+
