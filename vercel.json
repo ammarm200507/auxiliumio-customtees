@@ -1,0 +1,13 @@
+{
+  "rewrites": [
+    {
+      "source": "/proposals/customtees",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/proposals/customtees/:path*",
+      "destination": "/index.html"
+    }
+  ]
+}
+

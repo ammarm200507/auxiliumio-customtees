@@ -243,32 +243,117 @@ const IconRobot = () => {
   );
 };
 
+const IconShirt = () => {
+  const gradientId = `iconGradient-${Math.random().toString(36).substr(2, 9)}`;
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style={{stopColor: "#00E0FF", stopOpacity: 1}} />
+          <stop offset="100%" style={{stopColor: "#8B5CF6", stopOpacity: 1}} />
+        </linearGradient>
+      </defs>
+      <path d="M20 7h-3l-1-4H8L7 7H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1z" stroke={`url(#${gradientId})`} strokeWidth="2" fill="none"/>
+      <path d="M12 7v14" stroke={`url(#${gradientId})`} strokeWidth="2" strokeLinecap="round"/>
+    </svg>
+  );
+};
+
+const IconArrow = () => {
+  const gradientId = `iconGradient-${Math.random().toString(36).substr(2, 9)}`;
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style={{stopColor: "#00E0FF", stopOpacity: 1}} />
+          <stop offset="100%" style={{stopColor: "#8B5CF6", stopOpacity: 1}} />
+        </linearGradient>
+      </defs>
+      <path d="M5 12h14M12 5l7 7-7 7" stroke={`url(#${gradientId})`} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+};
+
+const IconPrinter = () => {
+  const gradientId = `iconGradient-${Math.random().toString(36).substr(2, 9)}`;
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style={{stopColor: "#00E0FF", stopOpacity: 1}} />
+          <stop offset="100%" style={{stopColor: "#8B5CF6", stopOpacity: 1}} />
+        </linearGradient>
+      </defs>
+      <path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" stroke={`url(#${gradientId})`} strokeWidth="2" fill="none"/>
+      <path d="M6 14h12v8H6z" stroke={`url(#${gradientId})`} strokeWidth="2" fill="none"/>
+    </svg>
+  );
+};
+
 const metaCards = [
   { label: "Proposal", value: "Phase 1 Launch + Strategic Roadmap" },
   { label: "Prepared For", value: "WePrintCustomTees" },
   { label: "Prepared By", value: "AuxiliumIO" },
-  { label: "Date", value: "November 12, 2025" },
+  { label: "Date", value: "November 18, 2025" },
 ];
 
 const phaseOneItems = [
   {
-    title: "AI Image Generation in Customizer",
+    title: "AI Image Generation Engine",
     description:
-      "Audit your current product customizer and implement an AI Generate workflow inside the existing UI. Customers can ideate, preview, and apply artwork without leaving the purchase path.",
+      "Build a complete AI-powered image generation system integrated into your product customizer. Customers can create, customize, and apply artwork seamlessly within the purchase flow.",
     bullets: [
-      "Evaluate watermark-free, commercial-use AI models and licensing",
-      "Prototype UX for prompt input, image selection, and garment placement",
-      "Modify plugin or craft lightweight integration to support image layering",
+      "Evaluate and integrate watermark-free, commercial-use AI models with proper licensing",
+      "Design intuitive UX for prompt input, image generation, selection, and editing",
+      "Build image layering system for garment placement and preview",
+      "Implement real-time preview with multiple design variations",
     ],
   },
   {
+    title: "AI Customizer Integration",
+    description:
+      "Seamlessly integrate the AI tool into your existing product customizer workflow, ensuring smooth user experience from design to order.",
+    bullets: [
+      "Audit current customizer architecture and identify integration points",
+      "Develop API connections between AI engine and customizer",
+      "Create image manipulation tools (resize, position, rotate, adjust colors)",
+      "Build order data capture system for print-ready file generation",
+    ],
+  },
+  {
+    title: "Print Integration & File Generation",
+    description:
+      "Connect the AI tool directly to WePrintCustomTees with automated order processing and print-ready file generation.",
+    bullets: [
+      "Automated order data transmission to WePrintCustomTees",
+      "Generate print-ready files (PNG, vector formats) with proper specifications",
+      "Create size and color variant handling for production",
+      "Build order tracking and status updates",
+    ],
+  },
+  {
+    title: "Mobile-Responsive AI Interface",
+    description:
+      "Ensure the AI tool works flawlessly on mobile devices, where many customers will design their custom shirts.",
+    bullets: [
+      "Responsive design optimization for touch interactions",
+      "Mobile-specific UI/UX enhancements for prompt input and image selection",
+      "Performance optimization for mobile browsers",
+      "Testing across iOS and Android devices",
+    ],
+  },
+];
+
+const phaseTwoItems = [
+  {
     title: "Site Optimization & Service Positioning",
     description:
-      "Extend your existing website with high-impact polish—clear services, updated visuals, and conversion-led messaging for screen printing, embroidery, and DTG.",
+      "Extend your existing website with high-impact polish—clear services, updated visuals, and conversion-led messaging highlighting the new AI customizer.",
     bullets: [
       "Content and CTA refresh anchored to your nationwide value proposition",
       "Performance and accessibility tune-up for faster browsing",
       "Embed AI-powered hero and showcase modules to spotlight innovation",
+      "Update service pages to highlight AI customization capabilities",
     ],
   },
   {
@@ -291,9 +376,6 @@ const phaseOneItems = [
       "Dashboard visibility into review velocity and response cadence",
     ],
   },
-];
-
-const phaseTwoItems = [
   {
     title: "Organic SEO Engine",
     description:
@@ -312,16 +394,6 @@ const phaseTwoItems = [
       "Listing optimization templates and AI-driven creative prompts",
       "Channel-specific compliance (brand registry, tax, fulfillment)",
       "Performance dashboards consolidating channel metrics",
-    ],
-  },
-  {
-    title: "Content Strategy & Creative Support",
-    description:
-      "Provide campaign ideas, scripts, and prompts while your team retains creative control. Align every asset with SEO and brand authority goals.",
-    bullets: [
-      "Monthly creative sync for campaigns and seasonal pushes",
-      "Shared storyboard and asset checklist for internal production",
-      "AI prompt library for rapid mockups and concept art",
     ],
   },
 ];
@@ -351,42 +423,42 @@ const phaseThreeItems = [
 
 const timeline = [
   {
-    label: "5–7 Days",
+    label: "Week 1-2",
     description:
-      "Technical audit, AI customizer prototype, GBP setup, initial review collateral design.",
+      "Technical audit, AI model evaluation and integration, customizer architecture review, and initial AI engine development.",
   },
   {
-    label: "7–10 Days",
+    label: "Week 3-4",
     description:
-      "AI integration merged, website optimizations live, SEO/marketplace foundations in motion, automated review system deployed.",
+      "AI customizer integration, image manipulation tools, print integration with WePrintCustomTees, and mobile optimization.",
   },
   {
-    label: "2–3 Days",
+    label: "Week 5-6",
     description:
-      "Final asset swaps, QA, training session, and go-live polish ahead of review/launch cadence.",
+      "Testing, QA, performance optimization, user training, documentation, and final polish before launch.",
   },
 ];
 
 const definitionOfDone = [
   {
-    title: "AI Customizer Ready for Customers",
+    title: "AI Image Generation Engine Complete",
     description:
-      "AI Generate button live within the existing product customizer, commercial-use model confirmed, training content delivered, and analytics tied to usage.",
+      "Fully functional AI image generation system integrated into customizer, commercial-use model confirmed and licensed, real-time preview working, and analytics tracking usage.",
   },
   {
-    title: "Website & GBP Optimized",
+    title: "Customizer Integration Live",
     description:
-      "Updated copy, visuals, and CTAs across key pages with Lighthouse, accessibility, and schema checks completed; GBP verified and enhanced.",
+      "AI tool seamlessly integrated into existing product customizer with image manipulation tools (resize, position, rotate), order data capture working, and user flow tested end-to-end.",
   },
   {
-    title: "Review Engine Live",
+    title: "Print Integration Operational",
     description:
-      "QR collateral delivered, Wave invoice prompts activated, and dashboard tracking review submissions and responses.",
+      "Automated order transmission to WePrintCustomTees working, print-ready files (PNG, vector) generating correctly with proper specifications, and order tracking functional.",
   },
   {
-    title: "Phase 2 Roadmap Aligned",
+    title: "Mobile-Responsive & Production Ready",
     description:
-      "SEO content calendar, marketplace integration checklist, and creative collaboration framework confirmed.",
+      "AI tool fully responsive on mobile devices, performance optimized, tested across iOS and Android, documentation complete, and team trained on system usage.",
   },
 ];
 
@@ -396,6 +468,86 @@ const nextSteps = [
   "Kickoff call to align AI workflow, SEO roadmap, and marketplace priorities.",
   "Schedule live training and set up shared dashboards for launch tracking.",
   "Review final deliverables, approve go-live, and select ongoing support plan.",
+];
+
+const heroBenefits = [
+  { icon: <IconLightning />, text: "Fast — Generate designs in seconds" },
+  { icon: <IconPaint />, text: "Easy — No design skills required" },
+  { icon: <IconCheck />, text: "Print-ready — Direct to production" },
+];
+
+const beforeAfterSteps = [
+  { step: "1", title: "Blank Shirt", description: "Start with a plain garment" },
+  { step: "2", title: "AI Design", description: "Generate custom artwork with AI" },
+  { step: "3", title: "Order Print", description: "Seamlessly order your design" },
+];
+
+const mvpFeatures = [
+  "AI image generation in customizer",
+  "Basic template library (3 style options)",
+  "Mobile-responsive design",
+  "Direct order integration with WePrintCustomTees",
+  "Print-ready file export (PNG, vector)",
+  "Basic analytics dashboard",
+];
+
+const midTierFeatures = [
+  "Everything in Core AI Designer, plus:",
+  "Advanced template library (10+ style categories)",
+  "Style options: Streetwear / Minimal / Business / Vintage / Modern",
+  "Multi-product support (shirts, hoodies, hats, etc.)",
+  "Advanced AI customization (text, colors, patterns)",
+  "Order management dashboard",
+  "Customer design gallery",
+  "Bulk order capabilities",
+  "White-label options",
+];
+
+const pricingOptions = [
+  {
+    name: "Option 1: Core AI Designer",
+    price: "$4,500",
+    timeline: "4-6 weeks",
+    features: [
+      "AI customizer integration",
+      "Basic template library (3 styles)",
+      "Mobile-responsive design",
+      "Print integration with WePrintCustomTees",
+      "Print-ready file formats",
+      "Basic analytics",
+      "One revision cycle",
+    ],
+  },
+  {
+    name: "Option 2: Advanced AI Design Studio",
+    price: "$8,500",
+    timeline: "8-12 weeks total",
+    features: [
+      "Everything in Core AI Designer, plus:",
+      "Advanced template library (10+ styles)",
+      "Multi-product support",
+      "Advanced AI customization",
+      "Order management dashboard",
+      "Customer design gallery",
+      "Bulk order capabilities",
+      "Two revision cycles",
+    ],
+  },
+];
+
+const workflowSteps = [
+  { icon: <IconShirt />, title: "Customer Designs", description: "User creates custom design using AI" },
+  { icon: <IconArrow />, title: "Order Data Sent", description: "Automated order & print files" },
+  { icon: <IconPrinter />, title: "WePrintCustomTees", description: "Receives order & production files" },
+  { icon: <IconPackage />, title: "Fulfillment", description: "Print, package & ship to customer" },
+];
+
+const styleOptions = [
+  { name: "Streetwear", description: "Bold graphics, urban aesthetics" },
+  { name: "Minimal", description: "Clean lines, simple designs" },
+  { name: "Business", description: "Professional, corporate-ready" },
+  { name: "Vintage", description: "Retro styles, classic looks" },
+  { name: "Modern", description: "Contemporary, trend-forward" },
 ];
 
 function Section({ title, summary, children }) {
@@ -412,9 +564,13 @@ function Section({ title, summary, children }) {
   );
 }
 
-function CardList({ items }) {
+function CardList({ items, className }) {
   const getIcon = (title) => {
     const iconMap = {
+      "AI Image Generation Engine": <IconPaint />,
+      "AI Customizer Integration": <IconPaint />,
+      "Print Integration & File Generation": <IconPrinter />,
+      "Mobile-Responsive AI Interface": <IconRobot />,
       "AI Image Generation in Customizer": <IconPaint />,
       "Site Optimization & Service Positioning": <IconLightning />,
       "Google Business Profile Launch": <IconLocation />,
@@ -429,7 +585,7 @@ function CardList({ items }) {
   };
 
   return (
-    <div className="card-grid">
+    <div className={`card-grid ${className || ""}`}>
       {items.map(({ title, description, bullets }) => (
         <div className="card" key={title}>
           <div className="card-content">
@@ -483,6 +639,127 @@ export default function App() {
         </div>
       </header>
 
+      <Section title="Build Your Custom Shirt Using AI">
+        <div className="hero-section">
+          <div className="hero-content">
+            <h2 className="hero-title">Build Your Custom Shirt Using AI</h2>
+            <p className="hero-subtitle">
+              Transform your ideas into print-ready designs in seconds. No design experience needed.
+            </p>
+            <div className="hero-benefits">
+              {heroBenefits.map((benefit, index) => (
+                <div className="hero-benefit" key={index}>
+                  <div className="hero-benefit-icon">{benefit.icon}</div>
+                  <span>{benefit.text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      <Section title="How It Works">
+        <div className="before-after">
+          {beforeAfterSteps.map((item, index) => (
+            <div className="before-after-step" key={index}>
+              <div className="step-number">{item.step}</div>
+              <div className="step-content">
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
+              {index < beforeAfterSteps.length - 1 && (
+                <div className="step-arrow">
+                  <IconArrow />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Template & Style Options">
+        <p style={{ textAlign: "center", marginBottom: "32px", fontSize: "18px", color: "var(--text-secondary)" }}>
+          Choose from multiple style categories to match your vision. Even in Core AI Designer, you can preview future upgrade options.
+        </p>
+        <div className="style-grid">
+          {styleOptions.map((style, index) => (
+            <div className="style-card" key={index}>
+              <h3>{style.name}</h3>
+              <p>{style.description}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Feature Comparison: Core AI Designer vs Advanced AI Design Studio">
+        <div className="feature-comparison">
+          <div className="feature-column">
+            <h3 className="feature-column-title">Core AI Designer</h3>
+            <div className="feature-list">
+              {mvpFeatures.map((feature, index) => (
+                <div className="feature-item" key={index}>
+                  <IconCheck />
+                  <span>{feature}</span>
+                </div>
+              ))}
+            </div>
+            <div className="feature-timeline">Timeline: 4-6 weeks</div>
+          </div>
+          <div className="feature-column">
+            <h3 className="feature-column-title">Advanced AI Design Studio</h3>
+            <div className="feature-list">
+              {midTierFeatures.map((feature, index) => (
+                <div className="feature-item" key={index}>
+                  <IconCheck />
+                  <span>{feature}</span>
+                </div>
+              ))}
+            </div>
+            <div className="feature-timeline">Timeline: Additional 4-8 weeks (8-12 weeks total)</div>
+          </div>
+        </div>
+      </Section>
+
+      <Section title="Print Integration & Workflow">
+        <p style={{ textAlign: "center", marginBottom: "32px", fontSize: "18px", color: "var(--text-secondary)" }}>
+          Seamless connection from customer design to print fulfillment
+        </p>
+        <div className="workflow-diagram">
+          {workflowSteps.map((step, index) => (
+            <div className="workflow-step" key={index}>
+              <div className="workflow-icon">{step.icon}</div>
+              <h3>{step.title}</h3>
+              <p>{step.description}</p>
+              {index < workflowSteps.length - 1 && (
+                <div className="workflow-connector">
+                  <IconArrow />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        <div className="workflow-details">
+          <div className="workflow-detail-card">
+            <h4>Print-Ready File Formats</h4>
+            <ul>
+              <li>PNG (high-resolution, transparent background)</li>
+              <li>Vector formats (SVG, EPS for scaling)</li>
+              <li>Size variants (S, M, L, XL placement guides)</li>
+              <li>Color specifications (CMYK for print, RGB for preview)</li>
+            </ul>
+          </div>
+          <div className="workflow-detail-card">
+            <h4>Automated Order Flow</h4>
+            <ul>
+              <li>Customer completes design → Order data captured</li>
+              <li>Print files automatically generated and formatted</li>
+              <li>Order sent to WePrintCustomTees with all specifications</li>
+              <li>Production-ready files include size, color, and placement data</li>
+            </ul>
+          </div>
+        </div>
+      </Section>
+
       <Section
         title="Core Objective"
         summary="Establish WePrintCustomTees as a leading, nationwide one-stop print shop by integrating
@@ -513,6 +790,18 @@ export default function App() {
                 <p>
                   We commit to the agreed timeline. Expedited delivery means we start immediately and
                   ship on schedule.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="card">
+            <div className="card-content">
+              <div className="card-icon"><IconVideo /></div>
+              <div className="card-text">
+                <h3>Training & Support After Launch</h3>
+                <p>
+                  We set you up to succeed. Live training, documentation, and ongoing support options
+                  available.
                 </p>
               </div>
             </div>
@@ -555,18 +844,6 @@ export default function App() {
           </div>
           <div className="card">
             <div className="card-content">
-              <div className="card-icon"><IconVideo /></div>
-              <div className="card-text">
-                <h3>Training & Support After Launch</h3>
-                <p>
-                  We set you up to succeed. Live training, documentation, and ongoing support options
-                  available.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="card-content">
               <div className="card-icon"><IconCheck /></div>
               <div className="card-text">
                 <h3>Transparent Pricing & Scope</h3>
@@ -580,20 +857,50 @@ export default function App() {
         </div>
       </Section>
 
-      <Section title="Phase 1 — Foundation & Core Integration">
-        <CardList items={phaseOneItems} />
+      <Section title="Phase 1 — AI Tool Development">
+        <CardList items={phaseOneItems} className="phase-one-grid" />
       </Section>
 
-      <Section title="Phase 2 — Organic Go-To-Market & Multi-Channel Expansion">
-        <CardList items={phaseTwoItems} />
-      </Section>
-
-      <Section title="Phase 3 — Operational Streamlining (Future Consideration)">
-        <CardList items={phaseThreeItems} />
+      <Section title="Investment & Pricing">
+        <p style={{ textAlign: "center", marginBottom: "32px", fontSize: "18px", color: "var(--text-secondary)" }}>
+          Choose the option that fits your needs. Both include full code ownership and documentation.
+        </p>
+        <div className="pricing-table">
+          {pricingOptions.map((option, index) => (
+            <div className="pricing-option-card" key={index}>
+              <div className="pricing-option-header">
+                <h3>{option.name}</h3>
+                <div className="pricing-option-price">{option.price}</div>
+                <div className="pricing-option-timeline">{option.timeline}</div>
+              </div>
+              <div className="pricing-option-features">
+                <ul>
+                  {option.features.map((feature, fIndex) => (
+                    <li key={fIndex}>
+                      <IconCheck />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="pricing-note">
+          <p>
+            <strong>Phase 2 & Phase 3</strong> scoped post-launch based on priorities.
+          </p>
+          <p style={{ marginTop: "12px" }}>
+            Optional <strong>Auxilium Care</strong> plan for proactive updates, SEO tuning, and
+            content support available starting at <strong>$1,200/month</strong>.
+          </p>
+        </div>
       </Section>
 
       <Section title="Timeline">
-        <p>Expedited delivery to get you live fast</p>
+        <p style={{ textAlign: "center", marginBottom: "32px", fontSize: "18px", color: "var(--text-secondary)" }}>
+          Expedited delivery to get you live fast
+        </p>
         <div className="timeline">
           {timeline.map(({ label, description }) => (
             <div className="timeline-card" key={label}>
@@ -605,7 +912,9 @@ export default function App() {
       </Section>
 
       <Section title="Definition of Done — Phase 1">
-        <p>What must be delivered and accepted for Phase 1 to be complete:</p>
+        <p style={{ textAlign: "center", marginBottom: "32px", fontSize: "18px", color: "var(--text-secondary)" }}>
+          What must be delivered and accepted for Phase 1 to be complete:
+        </p>
         <div className="list-stack">
           {definitionOfDone.map(({ title, description }, index) => (
             <div className="item" key={title}>
@@ -621,32 +930,12 @@ export default function App() {
         </div>
       </Section>
 
-      <Section title="Investment">
-        <div className="pricing-card">
-          <h3>Phase 1 — Foundation & Core Integration</h3>
-          <div className="pricing-details">
-            <div style={{ fontSize: "20px", marginBottom: "8px" }}>
-              <strong>$4,500</strong> fixed price
-            </div>
-            <div style={{ fontSize: "14px", marginBottom: "16px", opacity: 0.9 }}>
-              Expedited timeline included
-            </div>
-            <div>
-              Includes AI customizer integration, website optimization, GBP launch, and automated
-              review system with one revision cycle post-launch.
-            </div>
-          </div>
-          <div className="pricing-divider" />
-          <div className="pricing-details">
-            <div>
-              <strong>Phase 2 & Phase 3</strong> scoped post-launch based on priorities.
-            </div>
-            <div style={{ marginTop: "12px" }}>
-              Optional <strong>Auxilium Care</strong> plan for proactive updates, SEO tuning, and
-              content support available starting at <strong>$1,200/month</strong>.
-            </div>
-          </div>
-        </div>
+      <Section title="Phase 2 — Organic Go-To-Market & Multi-Channel Expansion">
+        <CardList items={phaseTwoItems} className="phase-two-grid" />
+      </Section>
+
+      <Section title="Phase 3 — Operational Streamlining (Future Consideration)">
+        <CardList items={phaseThreeItems} />
       </Section>
 
       <Section title="Next Steps">
