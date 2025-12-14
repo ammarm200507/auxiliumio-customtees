@@ -247,8 +247,8 @@ function AppMVP() {
               </div>
 
               <div className="flex items-center justify-center min-h-[500px] bg-black/20 rounded-xl p-8">
-                <div className="relative" style={{ width: "300px" }}>
-                  <svg viewBox="0 0 300 360" className="w-full h-auto">
+                <div className="relative" style={{ width: "350px" }}>
+                  <svg viewBox="0 0 400 480" className="w-full h-auto">
                     <defs>
                       {selectedDesign && (
                         <linearGradient id="designGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -256,44 +256,194 @@ function AppMVP() {
                           <stop offset="100%" stopColor={selectedDesign.colors[1]} />
                         </linearGradient>
                       )}
+                      {/* Shadow for depth */}
+                      <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+                        <feOffset dx="0" dy="2" result="offsetblur"/>
+                        <feComponentTransfer>
+                          <feFuncA type="linear" slope="0.3"/>
+                        </feComponentTransfer>
+                        <feMerge>
+                          <feMergeNode/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
                     </defs>
                     
-                    {/* T-Shirt */}
+                    {/* T-Shirt Body - Realistic shape */}
+                    {/* Main body */}
                     <path
-                      d="M 30 70 L 30 300 Q 30 320 50 320 L 250 320 Q 270 320 270 300 L 270 70 Q 270 50 250 50 L 230 50 L 230 30 Q 230 20 220 20 L 80 20 Q 70 20 70 30 L 70 50 L 50 50 Q 30 50 30 70 Z"
+                      d="M 60 100 
+                         L 60 420 
+                         Q 60 440 80 440 
+                         L 320 440 
+                         Q 340 440 340 420 
+                         L 340 100 
+                         Q 340 85 330 80 
+                         L 290 80 
+                         L 290 65 
+                         Q 290 50 275 50 
+                         L 200 50 
+                         L 200 45 
+                         Q 200 35 190 35 
+                         L 210 35 
+                         Q 220 35 220 45 
+                         L 220 50 
+                         L 125 50 
+                         Q 110 50 110 65 
+                         L 110 80 
+                         L 70 80 
+                         Q 60 85 60 100 Z"
                       fill={shirtColor}
-                      stroke="rgba(255, 255, 255, 0.2)"
-                      strokeWidth="3"
+                      stroke="rgba(0, 0, 0, 0.15)"
+                      strokeWidth="1.5"
+                      filter="url(#shadow)"
                     />
-                    <ellipse cx="50" cy="70" rx="25" ry="35" fill={shirtColor} stroke="rgba(255, 255, 255, 0.2)" strokeWidth="3" />
-                    <ellipse cx="250" cy="70" rx="25" ry="35" fill={shirtColor} stroke="rgba(255, 255, 255, 0.2)" strokeWidth="3" />
+                    
+                    {/* Left sleeve */}
+                    <ellipse
+                      cx="60"
+                      cy="100"
+                      rx="35"
+                      ry="50"
+                      fill={shirtColor}
+                      stroke="rgba(0, 0, 0, 0.15)"
+                      strokeWidth="1.5"
+                    />
+                    {/* Sleeve opening detail */}
+                    <ellipse
+                      cx="60"
+                      cy="100"
+                      rx="30"
+                      ry="42"
+                      fill="none"
+                      stroke="rgba(0, 0, 0, 0.1)"
+                      strokeWidth="1"
+                      strokeDasharray="2,2"
+                    />
+                    
+                    {/* Right sleeve */}
+                    <ellipse
+                      cx="340"
+                      cy="100"
+                      rx="35"
+                      ry="50"
+                      fill={shirtColor}
+                      stroke="rgba(0, 0, 0, 0.15)"
+                      strokeWidth="1.5"
+                    />
+                    {/* Sleeve opening detail */}
+                    <ellipse
+                      cx="340"
+                      cy="100"
+                      rx="30"
+                      ry="42"
+                      fill="none"
+                      stroke="rgba(0, 0, 0, 0.1)"
+                      strokeWidth="1"
+                      strokeDasharray="2,2"
+                    />
+                    
+                    {/* Neckline - more realistic */}
+                    {view === "front" ? (
+                      <path
+                        d="M 180 50 
+                           Q 200 50 220 50 
+                           Q 220 65 200 65 
+                           Q 180 65 180 50 Z"
+                        fill={shirtColor}
+                        stroke="rgba(0, 0, 0, 0.2)"
+                        strokeWidth="1.5"
+                      />
+                    ) : (
+                      <path
+                        d="M 170 50 
+                           Q 200 45 230 50 
+                           Q 230 75 200 75 
+                           Q 170 75 170 50 Z"
+                        fill={shirtColor}
+                        stroke="rgba(0, 0, 0, 0.2)"
+                        strokeWidth="1.5"
+                      />
+                    )}
+                    
+                    {/* Side seams for depth */}
+                    <line
+                      x1="60"
+                      y1="100"
+                      x2="60"
+                      y2="420"
+                      stroke="rgba(0, 0, 0, 0.08)"
+                      strokeWidth="1"
+                    />
+                    <line
+                      x1="340"
+                      y1="100"
+                      x2="340"
+                      y2="420"
+                      stroke="rgba(0, 0, 0, 0.08)"
+                      strokeWidth="1"
+                    />
+                    
+                    {/* Bottom hem detail */}
+                    <path
+                      d="M 80 440 Q 200 445 320 440"
+                      fill="none"
+                      stroke="rgba(0, 0, 0, 0.15)"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
                     
                     {/* Design on shirt */}
                     {selectedDesign && view === "front" && (
-                      <circle
-                        cx="150"
-                        cy="180"
-                        r="60"
-                        fill="url(#designGradient)"
-                        opacity="0.9"
-                      />
+                      <g>
+                        <circle
+                          cx="200"
+                          cy="200"
+                          r="65"
+                          fill="url(#designGradient)"
+                          opacity="0.92"
+                          filter="url(#shadow)"
+                        />
+                        {/* Design shadow for depth */}
+                        <ellipse
+                          cx="202"
+                          cy="205"
+                          rx="65"
+                          ry="10"
+                          fill="rgba(0, 0, 0, 0.2)"
+                          opacity="0.3"
+                        />
+                      </g>
                     )}
                     {selectedDesign && view === "back" && (
-                      <circle
-                        cx="150"
-                        cy="200"
-                        r="70"
-                        fill="url(#designGradient)"
-                        opacity="0.9"
-                      />
+                      <g>
+                        <circle
+                          cx="200"
+                          cy="220"
+                          r="75"
+                          fill="url(#designGradient)"
+                          opacity="0.92"
+                          filter="url(#shadow)"
+                        />
+                        {/* Design shadow for depth */}
+                        <ellipse
+                          cx="202"
+                          cy="228"
+                          rx="75"
+                          ry="12"
+                          fill="rgba(0, 0, 0, 0.2)"
+                          opacity="0.3"
+                        />
+                      </g>
                     )}
                     {!selectedDesign && (
                       <text
-                        x="150"
-                        y="180"
+                        x="200"
+                        y="200"
                         textAnchor="middle"
-                        fill="rgba(255, 255, 255, 0.3)"
-                        fontSize="16"
+                        fill="rgba(255, 255, 255, 0.25)"
+                        fontSize="14"
                         fontFamily="Inter, sans-serif"
                       >
                         Select a design to preview
