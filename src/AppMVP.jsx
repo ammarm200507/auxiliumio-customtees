@@ -1,109 +1,173 @@
 import { useState } from "react";
 import "./App.css";
 
-// MVP AI T-Shirt Design Tool
+// AI T-Shirt Designer - Functional MVP
 function AppMVP() {
-  console.log("AppMVP component loaded");
   const [prompt, setPrompt] = useState("");
-  const [designs, setDesigns] = useState([]);
+  const [generatedDesigns, setGeneratedDesigns] = useState([]);
   const [selectedDesign, setSelectedDesign] = useState(null);
   const [loading, setLoading] = useState(false);
   const [shirtColor, setShirtColor] = useState("#ffffff");
-  const [designPosition, setDesignPosition] = useState({ x: 50, y: 40 });
+  const [designSize, setDesignSize] = useState(100);
+  const [designPosition, setDesignPosition] = useState({ x: 50, y: 45 });
+  const [showPreview, setShowPreview] = useState(false);
 
   const shirtColors = [
-    { name: "White", value: "#ffffff" },
-    { name: "Black", value: "#000000" },
-    { name: "Navy", value: "#1a2332" },
-    { name: "Gray", value: "#808080" },
-    { name: "Red", value: "#d32f2f" },
-    { name: "Blue", value: "#1976d2" },
+    { name: "White", value: "#ffffff", textColor: "#000000" },
+    { name: "Black", value: "#000000", textColor: "#ffffff" },
+    { name: "Navy", value: "#1a2332", textColor: "#ffffff" },
+    { name: "Gray", value: "#808080", textColor: "#ffffff" },
+    { name: "Red", value: "#d32f2f", textColor: "#ffffff" },
+    { name: "Blue", value: "#1976d2", textColor: "#ffffff" },
+    { name: "Green", value: "#388e3c", textColor: "#ffffff" },
+    { name: "Purple", value: "#7b1fa2", textColor: "#ffffff" },
   ];
 
-  // Simulate AI design generation
-  const generateDesign = async () => {
-    if (!prompt.trim()) return;
+  // Generate designs based on AI prompt
+  const generateDesigns = async () => {
+    if (!prompt.trim()) {
+      alert("Please enter a design description");
+      return;
+    }
 
     setLoading(true);
+    setGeneratedDesigns([]);
     
-    // Simulate API call delay
+    // Simulate AI generation delay
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    // Generate mock designs based on prompt
-    const mockDesigns = Array.from({ length: 4 }, (_, i) => ({
-      id: Date.now() + i,
-      prompt: prompt,
-      preview: `🎨 ${prompt} (Design ${i + 1})`,
-      style: ["Minimal", "Bold", "Vintage", "Modern"][i],
-      colors: ["#00e0ff", "#8b5cf6", "#ff6b6b", "#4ecdc4"][i],
-    }));
+    // Generate 4 design variations based on prompt
+    const designs = [];
+    const styleVariations = ["Minimal", "Bold", "Vintage", "Modern"];
+    const colorSchemes = [
+      ["#00e0ff", "#8b5cf6"],
+      ["#ff6b6b", "#4ecdc4"],
+      ["#feca57", "#ff6348"],
+      ["#5f27cd", "#00d2d3"],
+    ];
 
-    setDesigns(mockDesigns);
+    for (let i = 0; i < 4; i++) {
+      designs.push({
+        id: Date.now() + i,
+        prompt: prompt,
+        style: styleVariations[i],
+        colors: colorSchemes[i],
+        previewText: prompt.split(" ").slice(0, 3).join(" ").toUpperCase(),
+        description: `${styleVariations[i]} style interpretation of "${prompt}"`,
+      });
+    }
+
+    setGeneratedDesigns(designs);
     setLoading(false);
   };
 
-  const handleDesignSelect = (design) => {
+  const selectDesign = (design) => {
     setSelectedDesign(design);
+    setShowPreview(true);
   };
 
   const exportDesign = () => {
     if (!selectedDesign) return;
-    alert(`Exporting design: ${selectedDesign.prompt}\n\nIn production, this would generate:\n- PNG file (high-res)\n- Vector file (SVG/EPS)\n- Print-ready specifications`);
+    
+    const exportData = {
+      prompt: selectedDesign.prompt,
+      style: selectedDesign.style,
+      shirtColor: shirtColor,
+      designSize: designSize,
+      position: designPosition,
+      timestamp: new Date().toISOString(),
+    };
+
+    // In production, this would generate actual print files
+    const message = `Design Export Ready!\n\n` +
+      `Prompt: ${exportData.prompt}\n` +
+      `Style: ${exportData.style}\n` +
+      `Shirt Color: ${shirtColors.find(c => c.value === shirtColor)?.name || shirtColor}\n` +
+      `Design Size: ${designSize}%\n\n` +
+      `Print-ready files would include:\n` +
+      `- High-res PNG (300 DPI)\n` +
+      `- Vector SVG format\n` +
+      `- Placement guide\n` +
+      `- Color specifications`;
+    
+    alert(message);
+    console.log("Export data:", exportData);
   };
 
   return (
-    <div className="mvp-container" style={{
+    <div style={{
       minHeight: "100vh",
       background: "#0a0d14",
-      padding: "40px 20px",
-      fontFamily: "Inter, sans-serif"
+      color: "#f5f8fc",
+      fontFamily: "Inter, 'Source Sans Pro', sans-serif",
+      padding: "0",
     }}>
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        {/* Header */}
-        <header style={{ textAlign: "center", marginBottom: "48px" }}>
-          <h1 style={{
-            background: "linear-gradient(135deg, #00e0ff, #8b5cf6)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            fontSize: "48px",
-            fontWeight: "700",
-            marginBottom: "16px",
-            fontFamily: "Poppins, sans-serif"
-          }}>
-            AI T-Shirt Designer
-          </h1>
-          <p style={{ color: "var(--text-secondary)", fontSize: "18px" }}>
-            Generate custom designs for your t-shirts using AI
-          </p>
-        </header>
+      {/* Header */}
+      <header style={{
+        background: "linear-gradient(135deg, rgba(0, 224, 255, 0.1), rgba(139, 92, 246, 0.1))",
+        borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+        padding: "24px 40px",
+        backdropFilter: "blur(10px)",
+      }}>
+        <div style={{ maxWidth: "1400px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div>
+            <h1 style={{
+              background: "linear-gradient(135deg, #00e0ff, #8b5cf6)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              fontSize: "32px",
+              fontWeight: "700",
+              margin: "0 0 8px 0",
+              fontFamily: "Poppins, sans-serif",
+            }}>
+              AI T-Shirt Designer
+            </h1>
+            <p style={{ margin: "0", color: "#c2c8d6", fontSize: "16px" }}>
+              Create custom graphic tees with AI-powered design generation
+            </p>
+          </div>
+          {selectedDesign && (
+            <button
+              onClick={exportDesign}
+              style={{
+                padding: "12px 32px",
+                background: "linear-gradient(135deg, #00e0ff, #8b5cf6)",
+                border: "none",
+                borderRadius: "8px",
+                color: "white",
+                fontSize: "16px",
+                fontWeight: "600",
+                cursor: "pointer",
+                transition: "transform 0.2s",
+              }}
+              onMouseOver={(e) => e.currentTarget.style.transform = "scale(1.05)"}
+              onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}
+            >
+              Export Design
+            </button>
+          )}
+        </div>
+      </header>
 
-        {/* Main Content */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "32px", marginBottom: "32px" }}>
-          {/* Left: Input & Generation */}
-          <div style={{
-            background: "var(--bg-card)",
-            borderRadius: "16px",
-            padding: "32px",
-            border: "1px solid rgba(255, 255, 255, 0.1)"
-          }}>
-            <h2 style={{ color: "var(--text-primary)", marginBottom: "24px", fontSize: "24px" }}>
-              Create Your Design
-            </h2>
-
-            <div style={{ marginBottom: "24px" }}>
-              <label style={{ 
-                display: "block", 
-                color: "var(--text-secondary)", 
-                marginBottom: "8px",
-                fontSize: "14px",
-                fontWeight: "500"
-              }}>
-                Describe your design
-              </label>
+      <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "40px 20px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: showPreview ? "1fr 1fr" : "1fr", gap: "32px" }}>
+          {/* Left: Design Generation */}
+          <div>
+            {/* Prompt Input */}
+            <div style={{
+              background: "rgba(20, 25, 35, 0.85)",
+              borderRadius: "16px",
+              padding: "32px",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              marginBottom: "24px",
+            }}>
+              <h2 style={{ color: "#f5f8fc", marginBottom: "20px", fontSize: "24px", fontWeight: "600" }}>
+                Describe Your Design
+              </h2>
               <textarea
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
-                placeholder="e.g., 'Abstract geometric patterns in blue and purple' or 'Vintage retro wave design'"
+                placeholder='e.g., "Abstract geometric patterns with neon colors" or "Vintage retro wave design with sunset colors" or "Minimalist mountain landscape in blue tones"'
                 style={{
                   width: "100%",
                   minHeight: "120px",
@@ -111,80 +175,173 @@ function AppMVP() {
                   background: "rgba(0, 0, 0, 0.3)",
                   border: "1px solid rgba(255, 255, 255, 0.1)",
                   borderRadius: "8px",
-                  color: "var(--text-primary)",
+                  color: "#f5f8fc",
                   fontSize: "16px",
                   fontFamily: "inherit",
-                  resize: "vertical"
+                  resize: "vertical",
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+                    generateDesigns();
+                  }
                 }}
               />
+              <div style={{ marginTop: "16px", display: "flex", gap: "12px", alignItems: "center" }}>
+                <button
+                  onClick={generateDesigns}
+                  disabled={loading || !prompt.trim()}
+                  style={{
+                    padding: "14px 32px",
+                    background: loading
+                      ? "rgba(0, 224, 255, 0.5)"
+                      : "linear-gradient(135deg, #00e0ff, #8b5cf6)",
+                    border: "none",
+                    borderRadius: "8px",
+                    color: "white",
+                    fontSize: "16px",
+                    fontWeight: "600",
+                    cursor: loading || !prompt.trim() ? "not-allowed" : "pointer",
+                    transition: "all 0.2s",
+                    opacity: loading || !prompt.trim() ? 0.6 : 1,
+                  }}
+                  onMouseOver={(e) => {
+                    if (!loading && prompt.trim()) {
+                      e.currentTarget.style.transform = "scale(1.02)";
+                    }
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.transform = "scale(1)";
+                  }}
+                >
+                  {loading ? "⏳ Generating Designs..." : "✨ Generate Designs"}
+                </button>
+                <span style={{ color: "#97a1b5", fontSize: "14px" }}>
+                  Press Ctrl+Enter to generate
+                </span>
+              </div>
             </div>
 
-            <button
-              onClick={generateDesign}
-              disabled={loading || !prompt.trim()}
-              style={{
-                width: "100%",
-                padding: "16px",
-                background: loading 
-                  ? "rgba(0, 224, 255, 0.5)" 
-                  : "linear-gradient(135deg, #00e0ff, #8b5cf6)",
-                border: "none",
-                borderRadius: "8px",
-                color: "white",
-                fontSize: "16px",
-                fontWeight: "600",
-                cursor: loading || !prompt.trim() ? "not-allowed" : "pointer",
-                transition: "transform 0.2s",
-              }}
-              onMouseOver={(e) => {
-                if (!loading && prompt.trim()) {
-                  e.currentTarget.style.transform = "scale(1.02)";
-                }
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = "scale(1)";
-              }}
-            >
-              {loading ? "Generating Designs..." : "Generate Designs"}
-            </button>
-
-            {designs.length > 0 && (
-              <div style={{ marginTop: "32px" }}>
-                <h3 style={{ color: "var(--text-primary)", marginBottom: "16px" }}>
-                  Generated Designs
+            {/* Generated Designs Grid */}
+            {generatedDesigns.length > 0 && (
+              <div style={{
+                background: "rgba(20, 25, 35, 0.85)",
+                borderRadius: "16px",
+                padding: "32px",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+              }}>
+                <h3 style={{ color: "#f5f8fc", marginBottom: "24px", fontSize: "20px", fontWeight: "600" }}>
+                  Generated Designs ({generatedDesigns.length})
                 </h3>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-                  {designs.map((design) => (
+                <div style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(2, 1fr)",
+                  gap: "16px",
+                }}>
+                  {generatedDesigns.map((design) => (
                     <div
                       key={design.id}
-                      onClick={() => handleDesignSelect(design)}
+                      onClick={() => selectDesign(design)}
                       style={{
-                        padding: "16px",
-                        background: selectedDesign?.id === design.id 
-                          ? "rgba(0, 224, 255, 0.2)" 
+                        padding: "24px",
+                        background: selectedDesign?.id === design.id
+                          ? "rgba(0, 224, 255, 0.2)"
                           : "rgba(0, 0, 0, 0.3)",
                         border: selectedDesign?.id === design.id
                           ? "2px solid #00e0ff"
                           : "1px solid rgba(255, 255, 255, 0.1)",
-                        borderRadius: "8px",
+                        borderRadius: "12px",
                         cursor: "pointer",
-                        transition: "all 0.2s"
+                        transition: "all 0.2s",
+                        position: "relative",
+                      }}
+                      onMouseOver={(e) => {
+                        if (selectedDesign?.id !== design.id) {
+                          e.currentTarget.style.borderColor = "rgba(0, 224, 255, 0.5)";
+                          e.currentTarget.style.transform = "translateY(-4px)";
+                        }
+                      }}
+                      onMouseOut={(e) => {
+                        if (selectedDesign?.id !== design.id) {
+                          e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                          e.currentTarget.style.transform = "translateY(0)";
+                        }
                       }}
                     >
-                      <div style={{ 
-                        fontSize: "32px", 
-                        marginBottom: "8px",
-                        textAlign: "center"
+                      {/* Design Preview */}
+                      <div style={{
+                        height: "180px",
+                        background: `linear-gradient(135deg, ${design.colors[0]}, ${design.colors[1]})`,
+                        borderRadius: "8px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        marginBottom: "16px",
+                        position: "relative",
+                        overflow: "hidden",
                       }}>
-                        {design.preview.split(" ")[0]}
+                        <div style={{
+                          fontSize: "24px",
+                          fontWeight: "700",
+                          color: "white",
+                          textAlign: "center",
+                          textShadow: "0 2px 8px rgba(0,0,0,0.3)",
+                          padding: "16px",
+                        }}>
+                          {design.previewText}
+                        </div>
                       </div>
-                      <div style={{ 
-                        color: "var(--text-secondary)", 
-                        fontSize: "12px",
-                        textAlign: "center"
-                      }}>
-                        {design.style}
+                      <div style={{ color: "#c2c8d6", fontSize: "14px", fontWeight: "600", marginBottom: "8px" }}>
+                        {design.style} Style
                       </div>
+                      <div style={{ color: "#97a1b5", fontSize: "12px" }}>
+                        {design.description}
+                      </div>
+                      {selectedDesign?.id === design.id && (
+                        <div style={{
+                          position: "absolute",
+                          top: "12px",
+                          right: "12px",
+                          background: "#00e0ff",
+                          borderRadius: "50%",
+                          width: "24px",
+                          height: "24px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          color: "white",
+                          fontSize: "14px",
+                        }}>
+                          ✓
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* How It Works */}
+            {generatedDesigns.length === 0 && !loading && (
+              <div style={{
+                background: "rgba(20, 25, 35, 0.85)",
+                borderRadius: "16px",
+                padding: "32px",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+                marginTop: "24px",
+              }}>
+                <h3 style={{ color: "#f5f8fc", marginBottom: "24px", fontSize: "20px", fontWeight: "600" }}>
+                  How It Works
+                </h3>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }}>
+                  {[
+                    { icon: "✍️", title: "Describe", desc: "Enter your design idea in plain English" },
+                    { icon: "🤖", title: "AI Generates", desc: "Our AI creates multiple style variations" },
+                    { icon: "👕", title: "Customize & Export", desc: "Preview on shirt and get print-ready files" },
+                  ].map((step, i) => (
+                    <div key={i}>
+                      <div style={{ fontSize: "40px", marginBottom: "12px" }}>{step.icon}</div>
+                      <h4 style={{ color: "#f5f8fc", marginBottom: "8px", fontSize: "18px" }}>{step.title}</h4>
+                      <p style={{ color: "#97a1b5", fontSize: "14px", lineHeight: "1.6" }}>{step.desc}</p>
                     </div>
                   ))}
                 </div>
@@ -192,157 +349,181 @@ function AppMVP() {
             )}
           </div>
 
-          {/* Right: Preview */}
-          <div style={{
-            background: "var(--bg-card)",
-            borderRadius: "16px",
-            padding: "32px",
-            border: "1px solid rgba(255, 255, 255, 0.1)"
-          }}>
-            <h2 style={{ color: "var(--text-primary)", marginBottom: "24px", fontSize: "24px" }}>
-              Preview
-            </h2>
-
-            {/* T-Shirt Preview */}
-            <div style={{
-              background: "rgba(0, 0, 0, 0.3)",
-              borderRadius: "16px",
-              padding: "40px",
-              minHeight: "400px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              marginBottom: "24px"
-            }}>
-              <div style={{ position: "relative", width: "100%", maxWidth: "300px" }}>
-                {/* T-Shirt SVG */}
-                <svg viewBox="0 0 200 240" style={{ width: "100%", height: "auto" }}>
-                  {/* Shirt body */}
-                  <path
-                    d="M 20 60 L 20 200 Q 20 220 40 220 L 160 220 Q 180 220 180 200 L 180 60 Q 180 40 160 40 L 140 40 L 140 20 Q 140 10 130 10 L 70 10 Q 60 10 60 20 L 60 40 L 40 40 Q 20 40 20 60 Z"
-                    fill={shirtColor}
-                    stroke="rgba(255, 255, 255, 0.3)"
-                    strokeWidth="2"
-                  />
-                  {/* Design placeholder */}
-                  {selectedDesign && (
-                    <circle
-                      cx={designPosition.x * 2}
-                      cy={designPosition.y * 2.4}
-                      r="30"
-                      fill={selectedDesign.colors}
-                      opacity="0.8"
-                    />
-                  )}
-                  {!selectedDesign && (
-                    <text
-                      x="100"
-                      y="120"
-                      textAnchor="middle"
-                      fill="rgba(255, 255, 255, 0.3)"
-                      fontSize="14"
-                    >
-                      Select a design to preview
-                    </text>
-                  )}
-                </svg>
-              </div>
-            </div>
-
-            {/* Shirt Color Picker */}
-            <div style={{ marginBottom: "24px" }}>
-              <label style={{ 
-                display: "block", 
-                color: "var(--text-secondary)", 
-                marginBottom: "12px",
-                fontSize: "14px",
-                fontWeight: "500"
+          {/* Right: Preview & Customization */}
+          {showPreview && selectedDesign && (
+            <div>
+              <div style={{
+                background: "rgba(20, 25, 35, 0.85)",
+                borderRadius: "16px",
+                padding: "32px",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+                position: "sticky",
+                top: "40px",
               }}>
-                Shirt Color
-              </label>
-              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-                {shirtColors.map((color) => (
-                  <button
-                    key={color.value}
-                    onClick={() => setShirtColor(color.value)}
+                <h2 style={{ color: "#f5f8fc", marginBottom: "24px", fontSize: "24px", fontWeight: "600" }}>
+                  Preview & Customize
+                </h2>
+
+                {/* T-Shirt Preview */}
+                <div style={{
+                  background: "rgba(0, 0, 0, 0.3)",
+                  borderRadius: "16px",
+                  padding: "60px 40px",
+                  marginBottom: "32px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  minHeight: "500px",
+                }}>
+                  <div style={{ position: "relative", width: "100%", maxWidth: "350px" }}>
+                    <svg viewBox="0 0 300 360" style={{ width: "100%", height: "auto" }}>
+                      {/* T-Shirt */}
+                      <defs>
+                        <linearGradient id="designGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor={selectedDesign.colors[0]} />
+                          <stop offset="100%" stopColor={selectedDesign.colors[1]} />
+                        </linearGradient>
+                      </defs>
+                      
+                      {/* Shirt body */}
+                      <path
+                        d="M 30 70 L 30 300 Q 30 320 50 320 L 250 320 Q 270 320 270 300 L 270 70 Q 270 50 250 50 L 230 50 L 230 30 Q 230 20 220 20 L 80 20 Q 70 20 70 30 L 70 50 L 50 50 Q 30 50 30 70 Z"
+                        fill={shirtColor}
+                        stroke="rgba(255, 255, 255, 0.2)"
+                        strokeWidth="3"
+                      />
+                      
+                      {/* Sleeves */}
+                      <ellipse cx="50" cy="70" rx="25" ry="35" fill={shirtColor} stroke="rgba(255, 255, 255, 0.2)" strokeWidth="3" />
+                      <ellipse cx="250" cy="70" rx="25" ry="35" fill={shirtColor} stroke="rgba(255, 255, 255, 0.2)" strokeWidth="3" />
+                      
+                      {/* Design on shirt */}
+                      <circle
+                        cx={150 + (designPosition.x - 50) * 3}
+                        cy={180 + (designPosition.y - 45) * 3.6}
+                        r={designSize * 1.5}
+                        fill="url(#designGradient)"
+                        opacity="0.9"
+                      />
+                      <text
+                        x={150 + (designPosition.x - 50) * 3}
+                        y={180 + (designPosition.y - 45) * 3.6}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        fill={shirtColors.find(c => c.value === shirtColor)?.textColor || "#000"}
+                        fontSize={designSize * 0.8}
+                        fontWeight="700"
+                        fontFamily="Poppins, sans-serif"
+                        opacity="0.8"
+                      >
+                        {selectedDesign.previewText}
+                      </text>
+                    </svg>
+                  </div>
+                </div>
+
+                {/* Shirt Color Picker */}
+                <div style={{ marginBottom: "24px" }}>
+                  <label style={{
+                    display: "block",
+                    color: "#c2c8d6",
+                    marginBottom: "12px",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                  }}>
+                    Shirt Color
+                  </label>
+                  <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                    {shirtColors.map((color) => (
+                      <button
+                        key={color.value}
+                        onClick={() => setShirtColor(color.value)}
+                        style={{
+                          width: "44px",
+                          height: "44px",
+                          borderRadius: "10px",
+                          background: color.value,
+                          border: shirtColor === color.value
+                            ? "3px solid #00e0ff"
+                            : "2px solid rgba(255, 255, 255, 0.2)",
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                          boxShadow: shirtColor === color.value ? "0 0 12px rgba(0, 224, 255, 0.5)" : "none",
+                        }}
+                        onMouseOver={(e) => e.currentTarget.style.transform = "scale(1.1)"}
+                        onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}
+                        title={color.name}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Design Size */}
+                <div style={{ marginBottom: "24px" }}>
+                  <label style={{
+                    display: "block",
+                    color: "#c2c8d6",
+                    marginBottom: "12px",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                  }}>
+                    Design Size: {designSize}%
+                  </label>
+                  <input
+                    type="range"
+                    min="50"
+                    max="150"
+                    value={designSize}
+                    onChange={(e) => setDesignSize(Number(e.target.value))}
                     style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "8px",
-                      background: color.value,
-                      border: shirtColor === color.value 
-                        ? "3px solid #00e0ff" 
-                        : "2px solid rgba(255, 255, 255, 0.2)",
-                      cursor: "pointer",
-                      transition: "transform 0.2s"
+                      width: "100%",
+                      height: "8px",
+                      borderRadius: "4px",
+                      background: "rgba(0, 224, 255, 0.2)",
+                      outline: "none",
                     }}
-                    onMouseOver={(e) => e.currentTarget.style.transform = "scale(1.1)"}
-                    onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}
-                    title={color.name}
                   />
-                ))}
+                </div>
+
+                {/* Design Position */}
+                <div>
+                  <label style={{
+                    display: "block",
+                    color: "#c2c8d6",
+                    marginBottom: "12px",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                  }}>
+                    Design Position
+                  </label>
+                  <div style={{ display: "flex", gap: "12px" }}>
+                    <div style={{ flex: 1 }}>
+                      <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        value={designPosition.x}
+                        onChange={(e) => setDesignPosition({ ...designPosition, x: Number(e.target.value) })}
+                        style={{ width: "100%" }}
+                      />
+                      <div style={{ color: "#97a1b5", fontSize: "12px", marginTop: "4px" }}>Horizontal</div>
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        value={designPosition.y}
+                        onChange={(e) => setDesignPosition({ ...designPosition, y: Number(e.target.value) })}
+                        style={{ width: "100%" }}
+                      />
+                      <div style={{ color: "#97a1b5", fontSize: "12px", marginTop: "4px" }}>Vertical</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-
-            {/* Export Button */}
-            {selectedDesign && (
-              <button
-                onClick={exportDesign}
-                style={{
-                  width: "100%",
-                  padding: "16px",
-                  background: "linear-gradient(135deg, #00e0ff, #8b5cf6)",
-                  border: "none",
-                  borderRadius: "8px",
-                  color: "white",
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  cursor: "pointer",
-                  transition: "transform 0.2s"
-                }}
-                onMouseOver={(e) => e.currentTarget.style.transform = "scale(1.02)"}
-                onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}
-              >
-                Export Print-Ready Design
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Info Section */}
-        <div style={{
-          background: "var(--bg-card)",
-          borderRadius: "16px",
-          padding: "32px",
-          border: "1px solid rgba(255, 255, 255, 0.1)",
-          marginTop: "32px"
-        }}>
-          <h3 style={{ color: "var(--text-primary)", marginBottom: "16px" }}>
-            How It Works
-          </h3>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }}>
-            <div>
-              <div style={{ fontSize: "32px", marginBottom: "8px" }}>1️⃣</div>
-              <h4 style={{ color: "var(--text-primary)", marginBottom: "8px" }}>Enter Prompt</h4>
-              <p style={{ color: "var(--text-secondary)", fontSize: "14px" }}>
-                Describe your design idea in plain English
-              </p>
-            </div>
-            <div>
-              <div style={{ fontSize: "32px", marginBottom: "8px" }}>2️⃣</div>
-              <h4 style={{ color: "var(--text-primary)", marginBottom: "8px" }}>AI Generates</h4>
-              <p style={{ color: "var(--text-secondary)", fontSize: "14px" }}>
-                Our AI creates multiple design variations
-              </p>
-            </div>
-            <div>
-              <div style={{ fontSize: "32px", marginBottom: "8px" }}>3️⃣</div>
-              <h4 style={{ color: "var(--text-primary)", marginBottom: "8px" }}>Export & Print</h4>
-              <p style={{ color: "var(--text-secondary)", fontSize: "14px" }}>
-                Get print-ready files and order directly
-              </p>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
@@ -350,4 +531,3 @@ function AppMVP() {
 }
 
 export default AppMVP;
-
