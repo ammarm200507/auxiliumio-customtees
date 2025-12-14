@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auxilium.io Proposal Template System</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            line-height: 1.6;
+            color: #333;
+            background: #fff;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            border: 1px solid #ddd;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        h1, h2, h3 {
+            margin-top: 32px;
+            margin-bottom: 16px;
+        }
+        h1 { border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+        h2 { border-bottom: 1px solid #eee; padding-bottom: 8px; }
+        .download-link {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 12px 24px;
+            background: #007bff;
+            color: white;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+        .download-link:hover {
+            background: #0056b3;
+            text-decoration: none;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div id="content"></div>
+    <a href="/proposals/customtees/PROPOSAL_TEMPLATE_COMPLETE.md" class="download-link" download>Download Markdown File</a>
+    <script>
+        // Try both paths - with and without base path
+        const paths = [
+            '/proposals/customtees/PROPOSAL_TEMPLATE_COMPLETE.md',
+            '/PROPOSAL_TEMPLATE_COMPLETE.md'
+        ];
+        
+        function tryFetch(paths, index) {
+            if (index >= paths.length) {
+                document.getElementById('content').innerHTML = '<p>Error loading markdown file. Please check the deployment.</p>';
+                return;
+            }
+            
+            fetch(paths[index])
+                .then(response => {
+                    if (!response.ok && index < paths.length - 1) {
+                        return tryFetch(paths, index + 1);
+                    }
+                    return response.text();
+                })
+                .then(markdown => {
+                    if (markdown) {
+                        document.getElementById('content').innerHTML = marked.parse(markdown);
+                    } else {
+                        tryFetch(paths, index + 1);
+                    }
+                })
+                .catch(err => {
+                    if (index < paths.length - 1) {
+                        tryFetch(paths, index + 1);
+                    } else {
+                        document.getElementById('content').innerHTML = '<p>Error loading markdown file. <a href="' + paths[paths.length - 1] + '">Click here to try raw markdown</a></p>';
+                    }
+                });
+        }
+        
+        tryFetch(paths, 0);
+    </script>
+</body>
+</html>
+

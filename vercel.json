@@ -1,16 +1,16 @@
 {
-  "rewrites": [
+  "routes": [
     {
-      "source": "/proposals/customtees",
-      "destination": "/index.html"
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
     },
     {
-      "source": "/proposals/customtees/:path*",
-      "destination": "/index.html"
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|json|md))",
+      "dest": "/$1"
     },
     {
-      "source": "/",
-      "destination": "/index.html"
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }

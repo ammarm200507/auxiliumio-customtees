@@ -1,0 +1,288 @@
+{
+  "id": "example-ecommerce-platform",
+  "meta": {
+    "proposalType": "Full-Stack E-Commerce Platform",
+    "clientName": "TechRetail Solutions",
+    "preparedBy": "AuxiliumIO",
+    "date": "December 1, 2025",
+    "badgeText": "TechRetail Solutions & AuxiliumIO"
+  },
+  "header": {
+    "title": "Modern E-Commerce Platform & Growth Strategy for",
+    "highlightedText": "TechRetail Solutions",
+    "description": "Complete online store solution with advanced features, analytics, and multi-channel integration. You own the platform. We build it right."
+  },
+  "hero": {
+    "title": "Build Your Complete Online Store",
+    "subtitle": "From product management to checkout, analytics to fulfillment - everything you need to scale your e-commerce business.",
+    "benefits": [
+      { "text": "Complete — Full store management system" },
+      { "text": "Scalable — Grows with your business" },
+      { "text": "Owned — 100% yours, no monthly fees" }
+    ]
+  },
+  "howItWorks": [
+    { "step": "1", "title": "Setup Products", "description": "Add your inventory and details" },
+    { "step": "2", "title": "Customize Store", "description": "Design your perfect storefront" },
+    { "step": "3", "title": "Launch & Scale", "description": "Go live and grow your sales" }
+  ],
+  "styleOptions": [
+    { "name": "Modern", "description": "Clean, contemporary design" },
+    { "name": "Classic", "description": "Traditional e-commerce layout" },
+    { "name": "Minimal", "description": "Focus on products, less clutter" },
+    { "name": "Bold", "description": "Eye-catching, vibrant styles" },
+    { "name": "Luxury", "description": "Premium, sophisticated aesthetic" }
+  ],
+  "coreFeatures": {
+    "mvp": [
+      "Product catalog management",
+      "Shopping cart & checkout",
+      "Payment processing integration",
+      "Order management system",
+      "Basic inventory tracking",
+      "Customer accounts"
+    ],
+    "advanced": [
+      "Everything in Core Platform, plus:",
+      "Advanced inventory management",
+      "Multi-vendor marketplace support",
+      "Subscription product support",
+      "Advanced analytics dashboard",
+      "Email marketing integration",
+      "Mobile app (iOS/Android)",
+      "AI-powered product recommendations",
+      "Advanced shipping rules"
+    ]
+  },
+  "workflow": [
+    { "title": "Product Setup", "description": "Manage inventory and listings" },
+    { "title": "Customer Orders", "description": "Secure checkout and payments" },
+    { "title": "Order Processing", "description": "Automated fulfillment workflow" },
+    { "title": "Shipping & Delivery", "description": "Track and deliver orders" }
+  ],
+  "sections": {
+    "coreObjective": {
+      "title": "Core Objective",
+      "summary": "Build a complete, scalable e-commerce platform for TechRetail Solutions that enables seamless online sales, efficient inventory management, and data-driven growth across multiple sales channels."
+    },
+    "differentiator": {
+      "title": "What Makes This Different",
+      "summary": "You own the entire platform. No monthly SaaS fees, no platform lock-in. We deliver clean, maintainable code that scales with your business and integrates with any tools you need."
+    },
+    "trustCommitments": {
+      "title": "Trust Commitments",
+      "summary": "Our promises to you"
+    }
+  },
+  "phase1": [
+    {
+      "title": "Core E-Commerce Platform",
+      "description": "Build the foundational online store with product management, shopping cart, and secure checkout.",
+      "bullets": [
+        "Product catalog with categories, variants, and images",
+        "Shopping cart and secure checkout flow",
+        "Payment gateway integration (Stripe, PayPal)",
+        "Order management dashboard",
+        "Basic inventory tracking"
+      ]
+    },
+    {
+      "title": "Customer Management",
+      "description": "Complete customer account system with authentication, profiles, and order history.",
+      "bullets": [
+        "User registration and authentication",
+        "Customer profiles and account management",
+        "Order history and tracking",
+        "Wishlist and saved addresses",
+        "Email notifications for orders"
+      ]
+    },
+    {
+      "title": "Admin Dashboard",
+      "description": "Comprehensive admin interface for managing products, orders, and store settings.",
+      "bullets": [
+        "Product management interface",
+        "Order processing and fulfillment tools",
+        "Customer management system",
+        "Analytics and reporting dashboard",
+        "Store configuration and settings"
+      ]
+    },
+    {
+      "title": "Mobile-Responsive Design",
+      "description": "Fully responsive storefront that works perfectly on all devices.",
+      "bullets": [
+        "Mobile-optimized product browsing",
+        "Touch-friendly checkout process",
+        "Fast loading times on mobile",
+        "Progressive Web App capabilities",
+        "Cross-device compatibility testing"
+      ]
+    }
+  ],
+  "phase2": [
+    {
+      "title": "Advanced Features",
+      "description": "Add powerful features to enhance customer experience and streamline operations.",
+      "bullets": [
+        "Advanced inventory management with low-stock alerts",
+        "Multi-warehouse support",
+        "Subscription and recurring billing",
+        "Gift cards and discount codes",
+        "Product reviews and ratings"
+      ]
+    },
+    {
+      "title": "Marketing & Analytics",
+      "description": "Tools to understand your customers and drive more sales.",
+      "bullets": [
+        "Advanced analytics dashboard",
+        "Email marketing integration",
+        "SEO optimization tools",
+        "Social media integration",
+        "Customer segmentation"
+      ]
+    },
+    {
+      "title": "Multi-Channel Integration",
+      "description": "Connect your store to marketplaces and sales channels.",
+      "bullets": [
+        "Amazon marketplace integration",
+        "eBay listing sync",
+        "Google Shopping feed",
+        "Facebook Shop connection",
+        "Unified order management"
+      ]
+    },
+    {
+      "title": "Shipping & Fulfillment",
+      "description": "Automated shipping calculations and fulfillment workflows.",
+      "bullets": [
+        "Multiple shipping carrier integration",
+        "Real-time shipping rate calculation",
+        "Automated label generation",
+        "Order tracking integration",
+        "Returns management system"
+      ]
+    },
+    {
+      "title": "Performance Optimization",
+      "description": "Speed and performance enhancements for better conversions.",
+      "bullets": [
+        "Image optimization and CDN setup",
+        "Caching strategy implementation",
+        "Database optimization",
+        "Core Web Vitals optimization",
+        "Load testing and performance tuning"
+      ]
+    }
+  ],
+  "phase3": [
+    {
+      "title": "Mobile Applications",
+      "description": "Native mobile apps for iOS and Android to reach customers on the go.",
+      "bullets": [
+        "iOS app development",
+        "Android app development",
+        "Push notification system",
+        "Mobile-specific features",
+        "App store submission"
+      ]
+    },
+    {
+      "title": "AI & Automation",
+      "description": "Leverage AI to improve customer experience and automate operations.",
+      "bullets": [
+        "AI-powered product recommendations",
+        "Chatbot for customer support",
+        "Automated inventory reordering",
+        "Dynamic pricing optimization",
+        "Fraud detection system"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "label": "Week 1-3",
+      "description": "Platform architecture, database design, core product and cart functionality development."
+    },
+    {
+      "label": "Week 4-6",
+      "description": "Checkout, payment integration, order management, admin dashboard, and customer accounts."
+    },
+    {
+      "label": "Week 7-8",
+      "description": "Testing, optimization, training, documentation, and final polish before launch."
+    }
+  ],
+  "definitionOfDone": [
+    {
+      "title": "Core Platform Complete",
+      "description": "Full product catalog, shopping cart, secure checkout, and payment processing working end-to-end with order management system operational."
+    },
+    {
+      "title": "Admin Dashboard Live",
+      "description": "Complete admin interface for managing products, orders, customers, and store settings with analytics dashboard functional."
+    },
+    {
+      "title": "Mobile-Responsive & Performance Optimized",
+      "description": "Store fully responsive on all devices, performance optimized for speed, and tested across major browsers and devices."
+    },
+    {
+      "title": "Production Ready & Documented",
+      "description": "All systems tested, documentation complete, team trained, and platform ready for production launch with support structure in place."
+    }
+  ],
+  "pricing": [
+    {
+      "name": "Option 1: Core E-Commerce Platform",
+      "price": "$12,500",
+      "timeline": "6-8 weeks",
+      "features": [
+        "Complete product catalog",
+        "Shopping cart & checkout",
+        "Payment processing",
+        "Order management",
+        "Admin dashboard",
+        "Customer accounts",
+        "Mobile responsive",
+        "One revision cycle"
+      ]
+    },
+    {
+      "name": "Option 2: Advanced Platform + Mobile Apps",
+      "price": "$28,500",
+      "timeline": "12-16 weeks total",
+      "features": [
+        "Everything in Core Platform, plus:",
+        "Advanced features suite",
+        "Marketing & analytics tools",
+        "Multi-channel integration",
+        "iOS mobile app",
+        "Android mobile app",
+        "AI recommendations",
+        "Two revision cycles"
+      ]
+    }
+  ],
+  "pricingNotes": {
+    "phase2": "Phase 2 & Phase 3 features can be added incrementally based on business needs.",
+    "carePlan": "Optional Auxilium Care plan for platform updates, security patches, and feature additions available starting at $2,500/month."
+  },
+  "nextSteps": [
+    "Review platform requirements and feature priorities.",
+    "Share product data, inventory details, and branding assets.",
+    "Schedule kickoff call to discuss architecture and integrations.",
+    "Set up development environment and project timeline.",
+    "Review mockups, approve design direction, and begin development."
+  ],
+  "footer": {
+    "company": "AuxiliumIO",
+    "tagline": "We make it simple. What is your IT?",
+    "location": "Houston, Texas",
+    "email": "getstarted@auxilium.io",
+    "validity": "Proposal valid for 10 business days | Version 1.0 | Project ID: TRS-2025-P1"
+  }
+}
+
+

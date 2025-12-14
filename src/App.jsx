@@ -1,3 +1,6 @@
+// Import proposal configuration
+import getProposalConfig from './config/proposalConfig';
+
 // Custom SVG Icons
 const IconClock = () => {
   const gradientId = `iconGradient-${Math.random().toString(36).substr(2, 9)}`;
@@ -290,265 +293,34 @@ const IconPrinter = () => {
   );
 };
 
-const metaCards = [
-  { label: "Proposal", value: "Phase 1 Launch + Strategic Roadmap" },
-  { label: "Prepared For", value: "WePrintCustomTees" },
-  { label: "Prepared By", value: "AuxiliumIO" },
-  { label: "Date", value: "November 18, 2025" },
-];
+// Helper function to get workflow icon by title
+function getWorkflowIcon(title) {
+  const titleLower = title.toLowerCase();
+  if (titleLower.includes("design") || titleLower.includes("product setup") || titleLower.includes("customer")) {
+    return <IconShirt />;
+  }
+  if (titleLower.includes("order") && titleLower.includes("sent")) {
+    return <IconArrow />;
+  }
+  if (titleLower.includes("order") && (titleLower.includes("customer") || titleLower.includes("processing"))) {
+    return <IconCart />;
+  }
+  if (titleLower.includes("weprint") || titleLower.includes("print")) {
+    return <IconPrinter />;
+  }
+  if (titleLower.includes("fulfill") || titleLower.includes("shipping") || titleLower.includes("delivery")) {
+    return <IconPackage />;
+  }
+  return <IconArrow />;
+}
 
-const phaseOneItems = [
-  {
-    title: "AI Image Generation Engine",
-    description:
-      "Build a complete AI-powered image generation system integrated into your product customizer. Customers can create, customize, and apply artwork seamlessly within the purchase flow.",
-    bullets: [
-      "Evaluate and integrate watermark-free, commercial-use AI models with proper licensing",
-      "Design intuitive UX for prompt input, image generation, selection, and editing",
-      "Build image layering system for garment placement and preview",
-      "Implement real-time preview with multiple design variations",
-    ],
-  },
-  {
-    title: "AI Customizer Integration",
-    description:
-      "Seamlessly integrate the AI tool into your existing product customizer workflow, ensuring smooth user experience from design to order.",
-    bullets: [
-      "Audit current customizer architecture and identify integration points",
-      "Develop API connections between AI engine and customizer",
-      "Create image manipulation tools (resize, position, rotate, adjust colors)",
-      "Build order data capture system for print-ready file generation",
-    ],
-  },
-  {
-    title: "Print Integration & File Generation",
-    description:
-      "Connect the AI tool directly to WePrintCustomTees with automated order processing and print-ready file generation.",
-    bullets: [
-      "Automated order data transmission to WePrintCustomTees",
-      "Generate print-ready files (PNG, vector formats) with proper specifications",
-      "Create size and color variant handling for production",
-      "Build order tracking and status updates",
-    ],
-  },
-  {
-    title: "Mobile-Responsive AI Interface",
-    description:
-      "Ensure the AI tool works flawlessly on mobile devices, where many customers will design their custom shirts.",
-    bullets: [
-      "Responsive design optimization for touch interactions",
-      "Mobile-specific UI/UX enhancements for prompt input and image selection",
-      "Performance optimization for mobile browsers",
-      "Testing across iOS and Android devices",
-    ],
-  },
-];
-
-const phaseTwoItems = [
-  {
-    title: "Site Optimization & Service Positioning",
-    description:
-      "Extend your existing website with high-impact polish—clear services, updated visuals, and conversion-led messaging highlighting the new AI customizer.",
-    bullets: [
-      "Content and CTA refresh anchored to your nationwide value proposition",
-      "Performance and accessibility tune-up for faster browsing",
-      "Embed AI-powered hero and showcase modules to spotlight innovation",
-      "Update service pages to highlight AI customization capabilities",
-    ],
-  },
-  {
-    title: "Google Business Profile Launch",
-    description:
-      "Stand up and optimize GBP to capture local and regional demand, ensuring consistent NAP data, service areas, and visual assets.",
-    bullets: [
-      "Verification support, keyword-rich descriptions, and service highlights",
-      "Posts cadence to reinforce AI-enabled offerings",
-      "Tracking set-up for calls, clicks, and direction requests",
-    ],
-  },
-  {
-    title: "Automated Review Flywheel",
-    description:
-      "Deliver a review request system tuned to call-in and in-person customers using QR inserts, SMS/email nudges, and Wave invoice prompts.",
-    bullets: [
-      "Design print collateral with QR codes tied to Google reviews",
-      "Embed frictionless review prompts into Wave payment experiences",
-      "Dashboard visibility into review velocity and response cadence",
-    ],
-  },
-  {
-    title: "Organic SEO Engine",
-    description:
-      "Build a deep content strategy covering buyer personas, nationwide verticals, and technical schema to rank across AI-enhanced print searches.",
-    bullets: [
-      "Keyword clusters for screen printing, DTG, embroidery, and AI customization",
-      "Editorial calendar for blogs, FAQs, and long-form guides",
-      "Technical SEO (core vitals, structured data, sitemap cadence)",
-    ],
-  },
-  {
-    title: "Marketplace Expansion Playbook",
-    description:
-      "Structure your catalog for TikTok Shop, Google Shopping, and Amazon with unified data governance and creative guidelines.",
-    bullets: [
-      "Listing optimization templates and AI-driven creative prompts",
-      "Channel-specific compliance (brand registry, tax, fulfillment)",
-      "Performance dashboards consolidating channel metrics",
-    ],
-  },
-];
-
-const phaseThreeItems = [
-  {
-    title: "Unified Order Aggregation",
-    description:
-      "Evaluate OMS integrations or custom middleware to centralize orders across your site, TikTok Shop, Google, Amazon, and offline intake.",
-    bullets: [
-      "Requirements gathering with your fulfillment and production leads",
-      "System comparison (e.g., Order Desk, SKUs IQ, custom Node/NetSuite bridge)",
-      "Automation roadmap for invoicing, art approvals, and status updates",
-    ],
-  },
-  {
-    title: "AI-Driven Internal Efficiencies",
-    description:
-      "Layer AI copilot tools for artwork proofing, job ticketing, and production scheduling once multi-channel demand scales.",
-    bullets: [
-      "Automated art rejection criteria and proof versioning",
-      "Predictive scheduling tied to production capacity",
-      "Inventory sync with supplier lead-time intelligence",
-    ],
-  },
-];
-
-const timeline = [
-  {
-    label: "Week 1-2",
-    description:
-      "Technical audit, AI model evaluation and integration, customizer architecture review, and initial AI engine development.",
-  },
-  {
-    label: "Week 3-4",
-    description:
-      "AI customizer integration, image manipulation tools, print integration with WePrintCustomTees, and mobile optimization.",
-  },
-  {
-    label: "Week 5-6",
-    description:
-      "Testing, QA, performance optimization, user training, documentation, and final polish before launch.",
-  },
-];
-
-const definitionOfDone = [
-  {
-    title: "AI Image Generation Engine Complete",
-    description:
-      "Fully functional AI image generation system integrated into customizer, commercial-use model confirmed and licensed, real-time preview working, and analytics tracking usage.",
-  },
-  {
-    title: "Customizer Integration Live",
-    description:
-      "AI tool seamlessly integrated into existing product customizer with image manipulation tools (resize, position, rotate), order data capture working, and user flow tested end-to-end.",
-  },
-  {
-    title: "Print Integration Operational",
-    description:
-      "Automated order transmission to WePrintCustomTees working, print-ready files (PNG, vector) generating correctly with proper specifications, and order tracking functional.",
-  },
-  {
-    title: "Mobile-Responsive & Production Ready",
-    description:
-      "AI tool fully responsive on mobile devices, performance optimized, tested across iOS and Android, documentation complete, and team trained on system usage.",
-  },
-];
-
-const nextSteps = [
-  "Confirm Phase 1 scope, pricing, and expedited timeline.",
-  "Share current site assets, customizer details, and platform credentials.",
-  "Kickoff call to align AI workflow, SEO roadmap, and marketplace priorities.",
-  "Schedule live training and set up shared dashboards for launch tracking.",
-  "Review final deliverables, approve go-live, and select ongoing support plan.",
-];
-
-const heroBenefits = [
-  { icon: <IconLightning />, text: "Fast — Generate designs in seconds" },
-  { icon: <IconPaint />, text: "Easy — No design skills required" },
-  { icon: <IconCheck />, text: "Print-ready — Direct to production" },
-];
-
-const beforeAfterSteps = [
-  { step: "1", title: "Blank Shirt", description: "Start with a plain garment" },
-  { step: "2", title: "AI Design", description: "Generate custom artwork with AI" },
-  { step: "3", title: "Order Print", description: "Seamlessly order your design" },
-];
-
-const mvpFeatures = [
-  "AI image generation in customizer",
-  "Basic template library (3 style options)",
-  "Mobile-responsive design",
-  "Direct order integration with WePrintCustomTees",
-  "Print-ready file export (PNG, vector)",
-  "Basic analytics dashboard",
-];
-
-const midTierFeatures = [
-  "Everything in Core AI Designer, plus:",
-  "Advanced template library (10+ style categories)",
-  "Style options: Streetwear / Minimal / Business / Vintage / Modern",
-  "Multi-product support (shirts, hoodies, hats, etc.)",
-  "Advanced AI customization (text, colors, patterns)",
-  "Order management dashboard",
-  "Customer design gallery",
-  "Bulk order capabilities",
-  "White-label options",
-];
-
-const pricingOptions = [
-  {
-    name: "Option 1: Core AI Designer",
-    price: "$4,500",
-    timeline: "4-6 weeks",
-    features: [
-      "AI customizer integration",
-      "Basic template library (3 styles)",
-      "Mobile-responsive design",
-      "Print integration with WePrintCustomTees",
-      "Print-ready file formats",
-      "Basic analytics",
-      "One revision cycle",
-    ],
-  },
-  {
-    name: "Option 2: Advanced AI Design Studio",
-    price: "$8,500",
-    timeline: "8-12 weeks total",
-    features: [
-      "Everything in Core AI Designer, plus:",
-      "Advanced template library (10+ styles)",
-      "Multi-product support",
-      "Advanced AI customization",
-      "Order management dashboard",
-      "Customer design gallery",
-      "Bulk order capabilities",
-      "Two revision cycles",
-    ],
-  },
-];
-
-const workflowSteps = [
-  { icon: <IconShirt />, title: "Customer Designs", description: "User creates custom design using AI" },
-  { icon: <IconArrow />, title: "Order Data Sent", description: "Automated order & print files" },
-  { icon: <IconPrinter />, title: "WePrintCustomTees", description: "Receives order & production files" },
-  { icon: <IconPackage />, title: "Fulfillment", description: "Print, package & ship to customer" },
-];
-
-const styleOptions = [
-  { name: "Streetwear", description: "Bold graphics, urban aesthetics" },
-  { name: "Minimal", description: "Clean lines, simple designs" },
-  { name: "Business", description: "Professional, corporate-ready" },
-  { name: "Vintage", description: "Retro styles, classic looks" },
-  { name: "Modern", description: "Contemporary, trend-forward" },
-];
+// Helper function to get hero benefit icon by text
+function getHeroIcon(text) {
+  if (text.includes("Fast") || text.includes("Complete")) return <IconLightning />;
+  if (text.includes("Easy") || text.includes("Scalable")) return <IconPaint />;
+  if (text.includes("Print-ready") || text.includes("Owned")) return <IconCheck />;
+  return <IconCheck />;
+}
 
 function Section({ title, summary, children }) {
   return (
@@ -609,6 +381,28 @@ function CardList({ items, className }) {
 }
 
 export default function App() {
+  // Load proposal configuration
+  const config = getProposalConfig();
+  
+  // Map config data to component structure
+  const metaCards = [
+    { label: "Proposal", value: config.meta.proposalType },
+    { label: "Prepared For", value: config.meta.clientName },
+    { label: "Prepared By", value: config.meta.preparedBy },
+    { label: "Date", value: config.meta.date },
+  ];
+  
+  const heroBenefits = config.hero.benefits.map(b => ({
+    icon: getHeroIcon(b.text),
+    text: b.text
+  }));
+  
+  const workflowSteps = config.workflow.map(w => ({
+    icon: getWorkflowIcon(w.title),
+    title: w.title,
+    description: w.description
+  }));
+  
   return (
     <div className="page">
       <header>
@@ -616,18 +410,18 @@ export default function App() {
           <img src="/Auxilium Logo 320 x 132.png" alt="AuxiliumIO" style={{ height: "50px", width: "auto" }} />
         </div>
         <div className="tagline" style={{ marginTop: "-16px", marginBottom: "8px" }}>
-          We make it simple. What is your IT?
+          {config.footer.tagline}
         </div>
         <div className="badge">
           <span />
-          Weprint Custom Tees & AuxiliumIO
+          {config.meta.badgeText}
         </div>
         <h1>
-          Advanced AI Integration & Multi-Channel Growth for{" "}
-          <span className="highlight">WePrintCustomTees</span>
+          {config.header.title}{" "}
+          <span className="highlight">{config.header.highlightedText}</span>
         </h1>
         <p>
-          Fast, professional solution for your custom print business. You own the code. Not us.
+          {config.header.description}
         </p>
         <div className="meta-grid">
           {metaCards.map(({ label, value }) => (
@@ -639,12 +433,12 @@ export default function App() {
         </div>
       </header>
 
-      <Section title="Build Your Custom Shirt Using AI">
+      <Section title={config.hero.title}>
         <div className="hero-section">
           <div className="hero-content">
-            <h2 className="hero-title">Build Your Custom Shirt Using AI</h2>
+            <h2 className="hero-title">{config.hero.title}</h2>
             <p className="hero-subtitle">
-              Transform your ideas into print-ready designs in seconds. No design experience needed.
+              {config.hero.subtitle}
             </p>
             <div className="hero-benefits">
               {heroBenefits.map((benefit, index) => (
@@ -660,14 +454,14 @@ export default function App() {
 
       <Section title="How It Works">
         <div className="before-after">
-          {beforeAfterSteps.map((item, index) => (
+          {config.howItWorks.map((item, index) => (
             <div className="before-after-step" key={index}>
               <div className="step-number">{item.step}</div>
               <div className="step-content">
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
               </div>
-              {index < beforeAfterSteps.length - 1 && (
+              {index < config.howItWorks.length - 1 && (
                 <div className="step-arrow">
                   <IconArrow />
                 </div>
@@ -682,7 +476,7 @@ export default function App() {
           Choose from multiple style categories to match your vision. Even in Core AI Designer, you can preview future upgrade options.
         </p>
         <div className="style-grid">
-          {styleOptions.map((style, index) => (
+          {config.styleOptions.map((style, index) => (
             <div className="style-card" key={index}>
               <h3>{style.name}</h3>
               <p>{style.description}</p>
@@ -696,26 +490,26 @@ export default function App() {
           <div className="feature-column">
             <h3 className="feature-column-title">Core AI Designer</h3>
             <div className="feature-list">
-              {mvpFeatures.map((feature, index) => (
+              {config.coreFeatures.mvp.map((feature, index) => (
                 <div className="feature-item" key={index}>
                   <IconCheck />
                   <span>{feature}</span>
                 </div>
               ))}
             </div>
-            <div className="feature-timeline">Timeline: 4-6 weeks</div>
+            <div className="feature-timeline">Timeline: {config.pricing[0]?.timeline || "4-6 weeks"}</div>
           </div>
           <div className="feature-column">
             <h3 className="feature-column-title">Advanced AI Design Studio</h3>
             <div className="feature-list">
-              {midTierFeatures.map((feature, index) => (
+              {config.coreFeatures.advanced.map((feature, index) => (
                 <div className="feature-item" key={index}>
                   <IconCheck />
                   <span>{feature}</span>
                 </div>
               ))}
             </div>
-            <div className="feature-timeline">Timeline: Additional 4-8 weeks (8-12 weeks total)</div>
+            <div className="feature-timeline">Timeline: {config.pricing[1]?.timeline || "Additional 4-8 weeks (8-12 weeks total)"}</div>
           </div>
         </div>
       </Section>
@@ -761,25 +555,20 @@ export default function App() {
       </Section>
 
       <Section
-        title="Core Objective"
-        summary="Establish WePrintCustomTees as a leading, nationwide one-stop print shop by integrating
-          advanced AI customization directly into your existing website, optimizing for organic
-          search visibility, and expanding sales across multiple online platforms with streamlined
-          order management."
+        title={config.sections.coreObjective.title}
+        summary={config.sections.coreObjective.summary}
       >
       </Section>
 
       <Section
-        title="What Makes This Different"
-        summary="You own the code. Not us. We build AI-powered customization, organic growth systems, and
-          multi-channel integrations that work—cleanly, clearly, and consistently. When we're
-          done, you get the full solution that any developer can maintain."
+        title={config.sections.differentiator.title}
+        summary={config.sections.differentiator.summary}
       >
       </Section>
 
       <Section
-        title="Trust Commitments"
-        summary="Our promises to you"
+        title={config.sections.trustCommitments.title}
+        summary={config.sections.trustCommitments.summary}
       >
         <div className="card-grid">
           <div className="card">
@@ -858,7 +647,7 @@ export default function App() {
       </Section>
 
       <Section title="Phase 1 — AI Tool Development">
-        <CardList items={phaseOneItems} className="phase-one-grid" />
+        <CardList items={config.phase1} className="phase-one-grid" />
       </Section>
 
       <Section title="Investment & Pricing">
@@ -866,7 +655,7 @@ export default function App() {
           Choose the option that fits your needs. Both include full code ownership and documentation.
         </p>
         <div className="pricing-table">
-          {pricingOptions.map((option, index) => (
+          {config.pricing.map((option, index) => (
             <div className="pricing-option-card" key={index}>
               <div className="pricing-option-header">
                 <h3>{option.name}</h3>
@@ -888,11 +677,10 @@ export default function App() {
         </div>
         <div className="pricing-note">
           <p>
-            <strong>Phase 2 & Phase 3</strong> scoped post-launch based on priorities.
+            <strong>{config.pricingNotes.phase2}</strong>
           </p>
           <p style={{ marginTop: "12px" }}>
-            Optional <strong>Auxilium Care</strong> plan for proactive updates, SEO tuning, and
-            content support available starting at <strong>$1,200/month</strong>.
+            {config.pricingNotes.carePlan}
           </p>
         </div>
       </Section>
@@ -902,7 +690,7 @@ export default function App() {
           Expedited delivery to get you live fast
         </p>
         <div className="timeline">
-          {timeline.map(({ label, description }) => (
+          {config.timeline.map(({ label, description }) => (
             <div className="timeline-card" key={label}>
               <strong>{label}</strong>
               <p>{description}</p>
@@ -916,7 +704,7 @@ export default function App() {
           What must be delivered and accepted for Phase 1 to be complete:
         </p>
         <div className="list-stack">
-          {definitionOfDone.map(({ title, description }, index) => (
+          {config.definitionOfDone.map(({ title, description }, index) => (
             <div className="item" key={title}>
               <div className="card-content">
                 <div className="card-icon"><IconCheck /></div>
@@ -931,29 +719,29 @@ export default function App() {
       </Section>
 
       <Section title="Phase 2 — Organic Go-To-Market & Multi-Channel Expansion">
-        <CardList items={phaseTwoItems} className="phase-two-grid" />
+        <CardList items={config.phase2} className="phase-two-grid" />
       </Section>
 
       <Section title="Phase 3 — Operational Streamlining (Future Consideration)">
-        <CardList items={phaseThreeItems} />
+        <CardList items={config.phase3} />
       </Section>
 
       <Section title="Next Steps">
         <ol className="next-steps">
-          {nextSteps.map((step) => (
+          {config.nextSteps.map((step) => (
             <li key={step}>{step}</li>
           ))}
         </ol>
       </Section>
 
       <footer>
-        <div style={{ fontWeight: 600, marginBottom: "4px" }}>AuxiliumIO</div>
+        <div style={{ fontWeight: 600, marginBottom: "4px" }}>{config.footer.company}</div>
         <div className="tagline" style={{ marginBottom: "8px" }}>
-          We make it simple. What is your IT?
+          {config.footer.tagline}
         </div>
-        <div>Houston, Texas | getstarted@auxilium.io</div>
+        <div>{config.footer.location} | {config.footer.email}</div>
         <div style={{ marginTop: "8px", fontSize: "13px" }}>
-          Proposal valid for 5 business days | Version 1.0 | Project ID: WCT-2025-P1
+          {config.footer.validity}
         </div>
       </footer>
     </div>
