@@ -3,6 +3,7 @@ import OpenAI from 'openai';
 
 /**
  * Generate AI designs using available services
+ * Priority: OpenAI DALL-E > Replicate > Hugging Face > Fallback
  */
 export async function generateDesigns(prompt, count = 4) {
   // Enhance prompt for t-shirt designs
@@ -31,7 +32,24 @@ export async function generateDesigns(prompt, count = 4) {
     const stylePrompt = `${enhancedPrompt}, ${style.modifier}`;
 
     try {
-      // Try Replicate first (best quality)
+      // Try OpenAI DALL-E first (best quality and easiest to use)
+      if (process.env.OPENAI_API_KEY) {
+        const imageUrl = await generateWithOpenAI(stylePrompt);
+        if (imageUrl) {
+          designs.push({
+            id: Date.now() + i,
+            prompt: prompt,
+            style: style.name,
+            colors: colors,
+            imageUrl: imageUrl,
+            previewText: prompt.split(" ").slice(0, 3).join(" ").toUpperCase(),
+            stylePrompt: stylePrompt,
+          });
+          continue;
+        }
+      }
+
+      // Try Replicate (also excellent quality)
       if (process.env.REPLICATE_API_TOKEN) {
         const imageUrl = await generateWithReplicate(stylePrompt);
         if (imageUrl) {
@@ -48,22 +66,6 @@ export async function generateDesigns(prompt, count = 4) {
         }
       }
 
-      // Try OpenAI DALL-E
-      if (process.env.OPENAI_API_KEY) {
-        const imageUrl = await generateWithOpenAI(stylePrompt);
-        if (imageUrl) {
-          designs.push({
-            id: Date.now() + i,
-            prompt: prompt,
-            style: style.name,
-            colors: colors,
-            imageUrl: imageUrl,
-            previewText: prompt.split(" ").slice(0, 3).join(" ").toUpperCase(),
-            stylePrompt: stylePrompt,
-          });
-          continue;
-        }
-      }
 
       // Try Hugging Face
       if (process.env.HF_API_KEY) {
@@ -149,17 +151,36 @@ async function generateWithOpenAI(prompt) {
       apiKey: process.env.OPENAI_API_KEY,
     });
 
+    // Use DALL-E 3 for best quality (or dall-e-2 for faster/cheaper)
+    const model = process.env.OPENAI_MODEL || "dall-e-3";
+    
     const response = await openai.images.generate({
-      model: "dall-e-3",
+      model: model,
       prompt: prompt,
       n: 1,
       size: "1024x1024",
-      quality: "standard",
+      quality: model === "dall-e-3" ? "standard" : undefined,
+      response_format: "url",
     });
 
     return response.data[0].url;
   } catch (error) {
-    console.error('OpenAI API error:', error);
+    console.error('OpenAI API error:', error.message);
+    // If DALL-E 3 fails, try DALL-E 2
+    if (error.message.includes('dall-e-3')) {
+      try {
+        const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+        const response = await openai.images.generate({
+          model: "dall-e-2",
+          prompt: prompt,
+          n: 1,
+          size: "512x512",
+        });
+        return response.data[0].url;
+      } catch (e2) {
+        console.error('DALL-E 2 also failed:', e2.message);
+      }
+    }
     return null;
   }
 }
