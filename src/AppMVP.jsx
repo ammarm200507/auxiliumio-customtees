@@ -235,7 +235,7 @@ function AppMVP() {
                       value={prompt}
                       onChange={(e) => setPrompt(e.target.value)}
                       placeholder='e.g., "Abstract geometric patterns with neon colors" or "Vintage retro wave design"'
-                      className="w-full h-32 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                      className="w-full h-32 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-gray-900 placeholder-gray-400 bg-white"
                       onKeyDown={(e) => {
                         if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
                           generateDesigns();
