@@ -3,6 +3,7 @@ import "./App.css";
 
 // MVP AI T-Shirt Design Tool
 function AppMVP() {
+  console.log("AppMVP component loaded");
   const [prompt, setPrompt] = useState("");
   const [designs, setDesigns] = useState([]);
   const [selectedDesign, setSelectedDesign] = useState(null);
@@ -53,7 +54,7 @@ function AppMVP() {
   return (
     <div className="mvp-container" style={{
       minHeight: "100vh",
-      background: "var(--bg-primary)",
+      background: "#0a0d14",
       padding: "40px 20px",
       fontFamily: "Inter, sans-serif"
     }}>
