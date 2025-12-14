@@ -1,8 +1,9 @@
 import { useState } from "react";
 import "./index.css";
 
-// Modern AI T-Shirt Designer MVP
+// Modern AI T-Shirt Designer - Step-by-Step Interface
 function AppMVP() {
+  const [currentStep, setCurrentStep] = useState(1); // 1: Upload, 2: Design, 3: Products, 4: Sizes
   const [prompt, setPrompt] = useState("");
   const [generatedDesigns, setGeneratedDesigns] = useState([]);
   const [selectedDesign, setSelectedDesign] = useState(null);
@@ -12,13 +13,46 @@ function AppMVP() {
   const [shirtSize, setShirtSize] = useState("M");
   const [quantity, setQuantity] = useState(1);
   const [view, setView] = useState("front"); // front or back
-  const [pricingMode, setPricingMode] = useState("retail"); // retail or wholesale
+  const [pricingMode, setPricingMode] = useState("retail");
+  const [zoom, setZoom] = useState(100);
+  const [displayMode, setDisplayMode] = useState("model"); // model, flat, grid
+
+  const steps = [
+    { id: 1, name: "Upload", icon: "☁️" },
+    { id: 2, name: "Design", icon: "🎨" },
+    { id: 3, name: "Products", icon: "👕" },
+    { id: 4, name: "Sizes", icon: "📏" },
+  ];
 
   const shirtTypes = [
-    { id: "t-shirt", name: "Classic T-Shirt", basePrice: 24.99 },
-    { id: "tank", name: "Tank Top", basePrice: 22.99 },
-    { id: "long-sleeve", name: "Long Sleeve", basePrice: 29.99 },
-    { id: "hoodie", name: "Hoodie", basePrice: 49.99 },
+    { 
+      id: "t-shirt", 
+      name: "Gildan G640 - Softstyle® Unisex T-Shirt", 
+      basePrice: 30.32,
+      material: "100% Cotton",
+      sizes: ["XS", "S", "M", "L", "XL"]
+    },
+    { 
+      id: "tank", 
+      name: "Classic Tank Top", 
+      basePrice: 22.99,
+      material: "100% Cotton",
+      sizes: ["XS", "S", "M", "L", "XL"]
+    },
+    { 
+      id: "long-sleeve", 
+      name: "Long Sleeve T-Shirt", 
+      basePrice: 35.99,
+      material: "100% Cotton",
+      sizes: ["XS", "S", "M", "L", "XL"]
+    },
+    { 
+      id: "hoodie", 
+      name: "Classic Hoodie", 
+      basePrice: 49.99,
+      material: "80% Cotton, 20% Polyester",
+      sizes: ["S", "M", "L", "XL", "2XL"]
+    },
   ];
 
   const shirtColors = [
@@ -36,25 +70,25 @@ function AppMVP() {
 
   // Pricing calculation
   const getBasePrice = () => {
-    return shirtTypes.find(t => t.id === shirtType)?.basePrice || 24.99;
+    return shirtTypes.find(t => t.id === shirtType)?.basePrice || 30.32;
   };
 
   const getUnitPrice = () => {
     const base = getBasePrice();
     if (pricingMode === "wholesale") {
-      if (quantity >= 50) return base * 0.6; // 40% discount
-      if (quantity >= 25) return base * 0.7; // 30% discount
-      if (quantity >= 10) return base * 0.8; // 20% discount
-      return base * 0.9; // 10% discount
+      if (quantity >= 50) return base * 0.6;
+      if (quantity >= 25) return base * 0.7;
+      if (quantity >= 10) return base * 0.8;
+      return base * 0.9;
     }
     return base;
   };
 
-  const getTotalPrice = () => {
+  const getSubTotal = () => {
     return (getUnitPrice() * quantity).toFixed(2);
   };
 
-  // Generate designs based on AI prompt
+  // Generate designs
   const generateDesigns = async () => {
     if (!prompt.trim()) {
       alert("Please enter a design description");
@@ -64,10 +98,8 @@ function AppMVP() {
     setLoading(true);
     setGeneratedDesigns([]);
     
-    // Simulate AI generation delay
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    // Generate 4 design variations
     const designs = [];
     const styleVariations = ["Minimal", "Bold", "Vintage", "Modern"];
     const colorSchemes = [
@@ -77,7 +109,6 @@ function AppMVP() {
       ["#5f27cd", "#00d2d3"],
     ];
     
-    // Create placeholder image URLs (using gradient placeholders)
     const placeholderImages = colorSchemes.map((colors, i) => 
       `https://via.placeholder.com/400x400/${colors[0].replace('#', '')}/${colors[1].replace('#', '')}?text=${encodeURIComponent(prompt.split(' ').slice(0, 2).join('+'))}`
     );
@@ -95,475 +126,488 @@ function AppMVP() {
 
     setGeneratedDesigns(designs);
     setLoading(false);
+    setCurrentStep(2); // Move to Design step
   };
 
   const selectDesign = (design) => {
     setSelectedDesign(design);
   };
 
+  const currentProduct = shirtTypes.find(t => t.id === shirtType) || shirtTypes[0];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0d14] via-[#141923] to-[#0a0d14]">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Header */}
-      <header className="border-b border-white/10 bg-white/5 backdrop-blur-xl sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <header className="bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-[1800px] mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-[#00e0ff] to-[#8b5cf6] bg-clip-text text-transparent font-display">
-                AI T-Shirt Designer
-              </h1>
-              <p className="text-gray-400 text-sm mt-1">Create custom graphic tees with AI</p>
+              <h1 className="text-2xl font-bold text-gray-900">Custom T-Shirt Designer</h1>
+              <p className="text-sm text-gray-500">Create your perfect design</p>
             </div>
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setPricingMode(pricingMode === "retail" ? "wholesale" : "retail")}
-                className="px-4 py-2 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition-colors text-sm font-medium"
-              >
-                {pricingMode === "retail" ? "💰 Retail" : "🏭 Wholesale"}
-              </button>
-            </div>
+            <button
+              onClick={() => setPricingMode(pricingMode === "retail" ? "wholesale" : "retail")}
+              className="px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 text-sm font-medium text-gray-700"
+            >
+              {pricingMode === "retail" ? "💰 Retail" : "🏭 Wholesale"}
+            </button>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Left: Design Generation */}
-          <div className="space-y-6">
-            {/* Prompt Input */}
-            <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10">
-              <h2 className="text-xl font-semibold mb-4">Describe Your Design</h2>
-              <textarea
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                placeholder='e.g., "Abstract geometric patterns with neon colors" or "Vintage retro wave design with sunset colors"'
-                className="w-full h-32 px-4 py-3 bg-black/30 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#00e0ff] resize-none"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
-                    generateDesigns();
-                  }
-                }}
-              />
-              <button
-                onClick={generateDesigns}
-                disabled={loading || !prompt.trim()}
-                className="mt-4 w-full py-3 bg-gradient-to-r from-[#00e0ff] to-[#8b5cf6] rounded-xl font-semibold text-white hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
-              >
-                {loading ? "⏳ Generating..." : "✨ Generate Designs"}
-              </button>
-              <p className="text-xs text-gray-500 mt-2 text-center">Press Ctrl+Enter to generate</p>
-            </div>
-
-            {/* Generated Designs */}
-            {generatedDesigns.length > 0 && (
-              <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10">
-                <h3 className="text-lg font-semibold mb-4">Generated Designs ({generatedDesigns.length})</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  {generatedDesigns.map((design) => (
-                    <div
-                      key={design.id}
-                      onClick={() => selectDesign(design)}
-                      className={`relative cursor-pointer rounded-xl overflow-hidden border-2 transition-all ${
-                        selectedDesign?.id === design.id
-                          ? "border-[#00e0ff] ring-2 ring-[#00e0ff]/50"
-                          : "border-white/10 hover:border-white/20"
-                      }`}
-                    >
-                      <div className="aspect-square bg-gradient-to-br" style={{
-                        backgroundImage: `linear-gradient(135deg, ${design.colors[0]}, ${design.colors[1]})`
-                      }}>
-                        <img 
-                          src={design.imageUrl} 
-                          alt={design.prompt}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            // Fallback to gradient if image fails
-                            e.target.style.display = 'none';
-                          }}
-                        />
-                      </div>
-                      <div className="absolute bottom-0 left-0 right-0 bg-black/70 p-2">
-                        <div className="text-xs font-semibold text-white">{design.style}</div>
-                      </div>
-                      {selectedDesign?.id === design.id && (
-                        <div className="absolute top-2 right-2 bg-[#00e0ff] rounded-full w-6 h-6 flex items-center justify-center">
-                          <span className="text-white text-xs">✓</span>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* How It Works */}
-            {generatedDesigns.length === 0 && !loading && (
-              <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10">
-                <h3 className="text-lg font-semibold mb-4">How It Works</h3>
-                <div className="grid grid-cols-3 gap-4">
-                  {[
-                    { icon: "✍️", title: "Describe", desc: "Enter your design idea" },
-                    { icon: "🤖", title: "AI Generates", desc: "Get 4 style variations" },
-                    { icon: "👕", title: "Customize", desc: "Preview & order" },
-                  ].map((step, i) => (
-                    <div key={i} className="text-center">
-                      <div className="text-4xl mb-2">{step.icon}</div>
-                      <div className="font-semibold text-sm mb-1">{step.title}</div>
-                      <div className="text-xs text-gray-400">{step.desc}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Right: Preview & Customization */}
-          <div className="space-y-6">
-            {/* T-Shirt Preview */}
-            <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold">Preview</h2>
-                <div className="flex gap-2 bg-black/30 rounded-lg p-1">
+      <div className="max-w-[1800px] mx-auto px-6 py-6">
+        <div className="grid grid-cols-12 gap-6 h-[calc(100vh-200px)]">
+          {/* Left Navigation */}
+          <div className="col-span-2">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 h-full">
+              <div className="space-y-2">
+                {steps.map((step) => (
                   <button
-                    onClick={() => setView("front")}
-                    className={`px-4 py-1 rounded-md text-sm font-medium transition-colors ${
-                      view === "front"
-                        ? "bg-[#00e0ff] text-black"
-                        : "text-gray-400 hover:text-white"
+                    key={step.id}
+                    onClick={() => setCurrentStep(step.id)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all ${
+                      currentStep === step.id
+                        ? "bg-blue-50 border-2 border-blue-500 text-blue-700 font-semibold"
+                        : "border-2 border-transparent text-gray-600 hover:bg-gray-50"
                     }`}
                   >
-                    Front
+                    <span className="text-xl">{step.icon}</span>
+                    <div>
+                      <div className="text-sm font-medium">{step.id}. {step.name}</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Central Configuration Panel */}
+          <div className="col-span-5 bg-white rounded-lg shadow-sm border border-gray-200 p-6 overflow-y-auto">
+            <div className="space-y-6">
+              {/* Step Header */}
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">{currentStep}. {steps.find(s => s.id === currentStep)?.name}</h2>
+              </div>
+
+              {/* Front/Back Toggle */}
+              {(currentStep === 1 || currentStep === 2) && (
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setView("front")}
+                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg border-2 transition-all ${
+                      view === "front"
+                        ? "border-blue-500 bg-blue-50 text-blue-700 font-semibold"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
+                  >
+                    <span>👕</span>
+                    Front of Shirt
                   </button>
                   <button
                     onClick={() => setView("back")}
-                    className={`px-4 py-1 rounded-md text-sm font-medium transition-colors ${
+                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg border-2 transition-all ${
                       view === "back"
-                        ? "bg-[#00e0ff] text-black"
-                        : "text-gray-400 hover:text-white"
+                        ? "border-blue-500 bg-blue-50 text-blue-700 font-semibold"
+                        : "border-gray-200 hover:border-gray-300"
                     }`}
                   >
-                    Back
+                    <span>👕</span>
+                    Back of Shirt
                   </button>
+                </div>
+              )}
+
+              {/* Product Details Card */}
+              <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
+                <div className="flex items-start gap-4">
+                  <div className="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center">
+                    <span className="text-3xl">👕</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-gray-900 mb-1">{currentProduct.name}</h3>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-sm text-gray-600">Color: {shirtColors.find(c => c.value === shirtColor)?.name}</span>
+                      <span className="px-2 py-1 bg-white rounded-full text-xs font-medium text-gray-700 border border-gray-200">
+                        {currentProduct.material}
+                      </span>
+                    </div>
+                    <div className="text-sm text-gray-600 mb-1">
+                      Prices for {currentProduct.sizes.join(", ")}: ${getUnitPrice().toFixed(2)}
+                    </div>
+                    <div className="text-lg font-bold text-gray-900">
+                      Sub Total: ${getSubTotal()}
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-center min-h-[500px] bg-black/20 rounded-xl p-8">
-                <div className="relative" style={{ width: "350px" }}>
-                  <svg viewBox="0 0 400 480" className="w-full h-auto">
-                    <defs>
-                      {selectedDesign && (
-                        <linearGradient id="designGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor={selectedDesign.colors[0]} />
-                          <stop offset="100%" stopColor={selectedDesign.colors[1]} />
-                        </linearGradient>
-                      )}
-                      {/* Shadow for depth */}
-                      <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
-                        <feOffset dx="0" dy="2" result="offsetblur"/>
-                        <feComponentTransfer>
-                          <feFuncA type="linear" slope="0.3"/>
-                        </feComponentTransfer>
-                        <feMerge>
-                          <feMergeNode/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                    </defs>
-                    
-                    {/* T-Shirt Body - Realistic shape */}
-                    {/* Main body */}
-                    <path
-                      d="M 60 100 
-                         L 60 420 
-                         Q 60 440 80 440 
-                         L 320 440 
-                         Q 340 440 340 420 
-                         L 340 100 
-                         Q 340 85 330 80 
-                         L 290 80 
-                         L 290 65 
-                         Q 290 50 275 50 
-                         L 200 50 
-                         L 200 45 
-                         Q 200 35 190 35 
-                         L 210 35 
-                         Q 220 35 220 45 
-                         L 220 50 
-                         L 125 50 
-                         Q 110 50 110 65 
-                         L 110 80 
-                         L 70 80 
-                         Q 60 85 60 100 Z"
-                      fill={shirtColor}
-                      stroke="rgba(0, 0, 0, 0.15)"
-                      strokeWidth="1.5"
-                      filter="url(#shadow)"
+              {/* Step 1: Upload/Generate */}
+              {currentStep === 1 && (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Describe Your Design
+                    </label>
+                    <textarea
+                      value={prompt}
+                      onChange={(e) => setPrompt(e.target.value)}
+                      placeholder='e.g., "Abstract geometric patterns with neon colors" or "Vintage retro wave design"'
+                      className="w-full h-32 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+                          generateDesigns();
+                        }
+                      }}
                     />
-                    
-                    {/* Left sleeve */}
-                    <ellipse
-                      cx="60"
-                      cy="100"
-                      rx="35"
-                      ry="50"
-                      fill={shirtColor}
-                      stroke="rgba(0, 0, 0, 0.15)"
-                      strokeWidth="1.5"
-                    />
-                    {/* Sleeve opening detail */}
-                    <ellipse
-                      cx="60"
-                      cy="100"
-                      rx="30"
-                      ry="42"
-                      fill="none"
-                      stroke="rgba(0, 0, 0, 0.1)"
-                      strokeWidth="1"
-                      strokeDasharray="2,2"
-                    />
-                    
-                    {/* Right sleeve */}
-                    <ellipse
-                      cx="340"
-                      cy="100"
-                      rx="35"
-                      ry="50"
-                      fill={shirtColor}
-                      stroke="rgba(0, 0, 0, 0.15)"
-                      strokeWidth="1.5"
-                    />
-                    {/* Sleeve opening detail */}
-                    <ellipse
-                      cx="340"
-                      cy="100"
-                      rx="30"
-                      ry="42"
-                      fill="none"
-                      stroke="rgba(0, 0, 0, 0.1)"
-                      strokeWidth="1"
-                      strokeDasharray="2,2"
-                    />
-                    
-                    {/* Neckline - more realistic */}
-                    {view === "front" ? (
-                      <path
-                        d="M 180 50 
-                           Q 200 50 220 50 
-                           Q 220 65 200 65 
-                           Q 180 65 180 50 Z"
-                        fill={shirtColor}
-                        stroke="rgba(0, 0, 0, 0.2)"
-                        strokeWidth="1.5"
-                      />
-                    ) : (
-                      <path
-                        d="M 170 50 
-                           Q 200 45 230 50 
-                           Q 230 75 200 75 
-                           Q 170 75 170 50 Z"
-                        fill={shirtColor}
-                        stroke="rgba(0, 0, 0, 0.2)"
-                        strokeWidth="1.5"
-                      />
-                    )}
-                    
-                    {/* Side seams for depth */}
-                    <line
-                      x1="60"
-                      y1="100"
-                      x2="60"
-                      y2="420"
-                      stroke="rgba(0, 0, 0, 0.08)"
-                      strokeWidth="1"
-                    />
-                    <line
-                      x1="340"
-                      y1="100"
-                      x2="340"
-                      y2="420"
-                      stroke="rgba(0, 0, 0, 0.08)"
-                      strokeWidth="1"
-                    />
-                    
-                    {/* Bottom hem detail */}
-                    <path
-                      d="M 80 440 Q 200 445 320 440"
-                      fill="none"
-                      stroke="rgba(0, 0, 0, 0.15)"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                    />
-                    
-                    {/* Design on shirt */}
-                    {selectedDesign && view === "front" && (
-                      <g>
-                        <circle
-                          cx="200"
-                          cy="200"
-                          r="65"
-                          fill="url(#designGradient)"
-                          opacity="0.92"
-                          filter="url(#shadow)"
-                        />
-                        {/* Design shadow for depth */}
-                        <ellipse
-                          cx="202"
-                          cy="205"
-                          rx="65"
-                          ry="10"
-                          fill="rgba(0, 0, 0, 0.2)"
-                          opacity="0.3"
-                        />
-                      </g>
-                    )}
-                    {selectedDesign && view === "back" && (
-                      <g>
-                        <circle
-                          cx="200"
-                          cy="220"
-                          r="75"
-                          fill="url(#designGradient)"
-                          opacity="0.92"
-                          filter="url(#shadow)"
-                        />
-                        {/* Design shadow for depth */}
-                        <ellipse
-                          cx="202"
-                          cy="228"
-                          rx="75"
-                          ry="12"
-                          fill="rgba(0, 0, 0, 0.2)"
-                          opacity="0.3"
-                        />
-                      </g>
-                    )}
-                    {!selectedDesign && (
-                      <text
-                        x="200"
-                        y="200"
-                        textAnchor="middle"
-                        fill="rgba(255, 255, 255, 0.25)"
-                        fontSize="14"
-                        fontFamily="Inter, sans-serif"
-                      >
-                        Select a design to preview
-                      </text>
-                    )}
-                  </svg>
+                    <button
+                      onClick={generateDesigns}
+                      disabled={loading || !prompt.trim()}
+                      className="mt-3 w-full py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    >
+                      {loading ? "⏳ Generating Designs..." : "✨ Generate Designs"}
+                    </button>
+                  </div>
+                  
+                  {/* Design Area Placeholder */}
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-12 flex flex-col items-center justify-center text-center min-h-[300px] bg-gray-50">
+                    <span className="text-6xl mb-4">👕</span>
+                    <p className="text-gray-600 font-medium">{view === "front" ? "Front of Shirt" : "Back of Shirt"}</p>
+                    <p className="text-sm text-gray-400 mt-2">Your design will appear here</p>
+                  </div>
+
+                  <button
+                    onClick={() => setCurrentStep(2)}
+                    disabled={!selectedDesign}
+                    className="w-full py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Next &gt;
+                  </button>
                 </div>
+              )}
+
+              {/* Step 2: Design Selection */}
+              {currentStep === 2 && (
+                <div className="space-y-4">
+                  {generatedDesigns.length > 0 ? (
+                    <>
+                      <div>
+                        <h3 className="font-semibold text-gray-900 mb-3">Select a Design</h3>
+                        <div className="grid grid-cols-2 gap-3">
+                          {generatedDesigns.map((design) => (
+                            <div
+                              key={design.id}
+                              onClick={() => selectDesign(design)}
+                              className={`relative cursor-pointer rounded-lg overflow-hidden border-2 transition-all ${
+                                selectedDesign?.id === design.id
+                                  ? "border-blue-500 ring-2 ring-blue-200"
+                                  : "border-gray-200 hover:border-gray-300"
+                              }`}
+                            >
+                              <div className="aspect-square bg-gradient-to-br" style={{
+                                backgroundImage: `linear-gradient(135deg, ${design.colors[0]}, ${design.colors[1]})`
+                              }}>
+                                <img 
+                                  src={design.imageUrl} 
+                                  alt={design.prompt}
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    e.target.style.display = 'none';
+                                  }}
+                                />
+                              </div>
+                              <div className="absolute bottom-0 left-0 right-0 bg-black/70 p-2">
+                                <div className="text-xs font-semibold text-white">{design.style}</div>
+                              </div>
+                              {selectedDesign?.id === design.id && (
+                                <div className="absolute top-2 right-2 bg-blue-600 rounded-full w-6 h-6 flex items-center justify-center">
+                                  <span className="text-white text-xs">✓</span>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      {selectedDesign && (
+                        <div className="border-2 border-gray-300 rounded-lg p-6 bg-gray-50 min-h-[200px] flex items-center justify-center">
+                          <div className="text-center">
+                            <div className="w-32 h-32 mx-auto mb-4 rounded-lg bg-gradient-to-br" style={{
+                              backgroundImage: `linear-gradient(135deg, ${selectedDesign.colors[0]}, ${selectedDesign.colors[1]})`
+                            }}></div>
+                            <p className="font-semibold text-gray-900">{selectedDesign.style} Design</p>
+                            <p className="text-sm text-gray-500">{selectedDesign.prompt}</p>
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="flex gap-3">
+                        <button
+                          onClick={() => setCurrentStep(1)}
+                          className="flex-1 py-3 border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+                        >
+                          ← Back
+                        </button>
+                        <button
+                          onClick={() => setCurrentStep(3)}
+                          disabled={!selectedDesign}
+                          className="flex-1 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        >
+                          Next &gt;
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-center py-12">
+                      <p className="text-gray-500">Generate designs in Step 1 first</p>
+                      <button
+                        onClick={() => setCurrentStep(1)}
+                        className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700"
+                      >
+                        Go to Upload
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Step 3: Products */}
+              {currentStep === 3 && (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-3">Select Product</label>
+                    <div className="space-y-2">
+                      {shirtTypes.map((type) => (
+                        <button
+                          key={type.id}
+                          onClick={() => setShirtType(type.id)}
+                          className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg border-2 text-left transition-all ${
+                            shirtType === type.id
+                              ? "border-blue-500 bg-blue-50"
+                              : "border-gray-200 hover:border-gray-300"
+                          }`}
+                        >
+                          <span className="text-2xl">👕</span>
+                          <div className="flex-1">
+                            <div className="font-semibold text-gray-900">{type.name}</div>
+                            <div className="text-sm text-gray-500">${type.basePrice.toFixed(2)}</div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setCurrentStep(2)}
+                      className="flex-1 py-3 border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+                    >
+                      ← Back
+                    </button>
+                    <button
+                      onClick={() => setCurrentStep(4)}
+                      className="flex-1 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                    >
+                      Next &gt;
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 4: Sizes & Quantity */}
+              {currentStep === 4 && (
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-3">Size</label>
+                    <div className="flex flex-wrap gap-2">
+                      {sizes.map((size) => (
+                        <button
+                          key={size}
+                          onClick={() => setShirtSize(size)}
+                          className={`px-4 py-2 rounded-lg border-2 transition-all text-sm font-medium ${
+                            shirtSize === size
+                              ? "border-blue-500 bg-blue-50 text-blue-700"
+                              : "border-gray-200 hover:border-gray-300"
+                          }`}
+                        >
+                          {size}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-3">Quantity</label>
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        className="w-10 h-10 rounded-lg border border-gray-300 hover:bg-gray-50 flex items-center justify-center font-semibold"
+                      >
+                        -
+                      </button>
+                      <span className="w-16 text-center font-semibold text-lg">{quantity}</span>
+                      <button
+                        onClick={() => setQuantity(quantity + 1)}
+                        className="w-10 h-10 rounded-lg border border-gray-300 hover:bg-gray-50 flex items-center justify-center font-semibold"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
+                    <div className="flex justify-between items-center">
+                      <span className="font-semibold text-gray-900">Total</span>
+                      <span className="text-2xl font-bold text-gray-900">${getSubTotal()}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setCurrentStep(3)}
+                      className="flex-1 py-3 border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+                    >
+                      ← Back
+                    </button>
+                    <button
+                      className="flex-1 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Right Product Preview */}
+          <div className="col-span-5 bg-white rounded-lg shadow-sm border border-gray-200 p-6 flex flex-col">
+            {/* Preview Controls */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setView("front")}
+                  className={`px-3 py-1.5 rounded text-sm font-medium ${
+                    view === "front"
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  }`}
+                >
+                  Front
+                </button>
+                <button
+                  onClick={() => setView("back")}
+                  className={`px-3 py-1.5 rounded text-sm font-medium ${
+                    view === "back"
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  }`}
+                >
+                  Back
+                </button>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setZoom(Math.max(50, zoom - 25))}
+                  className="px-2 py-1 text-gray-600 hover:bg-gray-100 rounded"
+                >
+                  -
+                </button>
+                <span className="text-sm text-gray-600 w-16 text-center">{zoom}%</span>
+                <button
+                  onClick={() => setZoom(Math.min(200, zoom + 25))}
+                  className="px-2 py-1 text-gray-600 hover:bg-gray-100 rounded"
+                >
+                  +
+                </button>
               </div>
             </div>
 
-            {/* Customization Options */}
-            <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 space-y-6">
-              {/* Shirt Type */}
-              <div>
-                <label className="block text-sm font-medium mb-3">Shirt Type</label>
-                <div className="grid grid-cols-2 gap-3">
-                  {shirtTypes.map((type) => (
-                    <button
-                      key={type.id}
-                      onClick={() => setShirtType(type.id)}
-                      className={`px-4 py-3 rounded-xl border-2 transition-all text-sm font-medium ${
-                        shirtType === type.id
-                          ? "border-[#00e0ff] bg-[#00e0ff]/10 text-[#00e0ff]"
-                          : "border-white/10 hover:border-white/20"
-                      }`}
-                    >
-                      {type.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
+            {/* Display Mode Toggle */}
+            <div className="flex gap-2 mb-4">
+              <button
+                onClick={() => setDisplayMode("model")}
+                className={`p-2 rounded ${displayMode === "model" ? "bg-blue-100 text-blue-600" : "bg-gray-100 text-gray-600"}`}
+                title="Model View"
+              >
+                👕
+              </button>
+              <button
+                onClick={() => setDisplayMode("flat")}
+                className={`p-2 rounded ${displayMode === "flat" ? "bg-blue-100 text-blue-600" : "bg-gray-100 text-gray-600"}`}
+                title="Flat View"
+              >
+                ⬜
+              </button>
+              <button
+                onClick={() => setDisplayMode("grid")}
+                className={`p-2 rounded ${displayMode === "grid" ? "bg-blue-100 text-blue-600" : "bg-gray-100 text-gray-600"}`}
+                title="Grid View"
+              >
+                ⊞
+              </button>
+            </div>
 
-              {/* Shirt Color */}
-              <div>
-                <label className="block text-sm font-medium mb-3">Color</label>
-                <div className="flex flex-wrap gap-3">
-                  {shirtColors.map((color) => (
-                    <button
-                      key={color.value}
-                      onClick={() => setShirtColor(color.value)}
-                      className={`w-12 h-12 rounded-xl border-2 transition-all ${
-                        shirtColor === color.value
-                          ? "border-[#00e0ff] ring-2 ring-[#00e0ff]/50"
-                          : "border-white/20 hover:border-white/40"
-                      }`}
-                      style={{ backgroundColor: color.value }}
-                      title={color.name}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              {/* Size */}
-              <div>
-                <label className="block text-sm font-medium mb-3">Size</label>
-                <div className="flex flex-wrap gap-2">
-                  {sizes.map((size) => (
-                    <button
-                      key={size}
-                      onClick={() => setShirtSize(size)}
-                      className={`px-4 py-2 rounded-lg border-2 transition-all text-sm font-medium ${
-                        shirtSize === size
-                          ? "border-[#00e0ff] bg-[#00e0ff]/10 text-[#00e0ff]"
-                          : "border-white/10 hover:border-white/20"
-                      }`}
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Quantity & Pricing */}
-              <div className="pt-4 border-t border-white/10">
-                <div className="flex items-center justify-between mb-4">
-                  <label className="block text-sm font-medium">Quantity</label>
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="w-8 h-8 rounded-lg border border-white/10 hover:bg-white/10 flex items-center justify-center"
-                    >
-                      -
-                    </button>
-                    <span className="w-12 text-center font-semibold">{quantity}</span>
-                    <button
-                      onClick={() => setQuantity(quantity + 1)}
-                      className="w-8 h-8 rounded-lg border border-white/10 hover:bg-white/10 flex items-center justify-center"
-                    >
-                      +
-                    </button>
+            {/* Product Preview */}
+            <div className="flex-1 flex items-center justify-center bg-gray-50 rounded-lg overflow-hidden relative">
+              <div className="relative" style={{ transform: `scale(${zoom / 100})`, transition: 'transform 0.2s' }}>
+                {displayMode === "model" ? (
+                  <div className="relative" style={{ width: "400px", height: "500px" }}>
+                    {/* Model silhouette with shirt */}
+                    <svg viewBox="0 0 400 500" className="w-full h-full">
+                      {/* Model base */}
+                      <ellipse cx="200" cy="480" rx="120" ry="20" fill="#e5e7eb" opacity="0.3" />
+                      
+                      {/* T-Shirt on model */}
+                      <path
+                        d="M 80 120 L 80 420 Q 80 440 100 440 L 300 440 Q 320 440 320 420 L 320 120 Q 320 100 300 100 L 280 100 L 280 80 Q 280 65 265 65 L 235 65 Q 220 65 220 80 L 220 100 L 180 100 L 180 80 Q 180 65 165 65 L 135 65 Q 120 65 120 80 L 120 100 L 100 100 Q 80 100 80 120 Z"
+                        fill={shirtColor}
+                        stroke="rgba(0, 0, 0, 0.1)"
+                        strokeWidth="2"
+                      />
+                      
+                      {/* Sleeves */}
+                      <ellipse cx="80" cy="120" rx="30" ry="45" fill={shirtColor} stroke="rgba(0, 0, 0, 0.1)" strokeWidth="2" />
+                      <ellipse cx="320" cy="120" rx="30" ry="45" fill={shirtColor} stroke="rgba(0, 0, 0, 0.1)" strokeWidth="2" />
+                      
+                      {/* Design */}
+                      {selectedDesign && view === "front" && (
+                        <defs>
+                          <linearGradient id="previewGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor={selectedDesign.colors[0]} />
+                            <stop offset="100%" stopColor={selectedDesign.colors[1]} />
+                          </linearGradient>
+                        </defs>
+                      )}
+                      {selectedDesign && view === "front" && (
+                        <circle cx="200" cy="220" r="50" fill="url(#previewGradient)" opacity="0.9" />
+                      )}
+                      {selectedDesign && view === "back" && (
+                        <circle cx="200" cy="240" r="60" fill="url(#previewGradient)" opacity="0.9" />
+                      )}
+                    </svg>
                   </div>
-                </div>
-                
-                <div className="space-y-2 bg-black/30 rounded-xl p-4">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-400">
-                      {pricingMode === "retail" ? "Retail Price" : "Wholesale Price"}
-                    </span>
-                    <span className="font-semibold">${getUnitPrice().toFixed(2)} each</span>
-                  </div>
-                  {pricingMode === "wholesale" && quantity >= 10 && (
-                    <div className="text-xs text-[#00e0ff]">
-                      {quantity >= 50 ? "40%" : quantity >= 25 ? "30%" : "20%"} discount applied
-                    </div>
-                  )}
-                  <div className="flex justify-between items-center pt-2 border-t border-white/10">
-                    <span className="font-semibold">Total</span>
-                    <span className="text-2xl font-bold bg-gradient-to-r from-[#00e0ff] to-[#8b5cf6] bg-clip-text text-transparent">
-                      ${getTotalPrice()}
-                    </span>
-                  </div>
-                </div>
-
-                <button
-                  disabled={!selectedDesign}
-                  className="mt-4 w-full py-4 bg-gradient-to-r from-[#00e0ff] to-[#8b5cf6] rounded-xl font-semibold text-white hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
-                >
-                  Add to Cart
-                </button>
+                ) : (
+                  <div className="text-gray-400">Flat/Grid view coming soon</div>
+                )}
               </div>
+            </div>
+
+            {/* Bottom Controls */}
+            <div className="flex gap-3 mt-4">
+              <button
+                onClick={() => setCurrentStep(3)}
+                className="flex-1 flex items-center justify-center gap-2 py-3 bg-white border-2 border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50"
+              >
+                <div className="w-4 h-4 rounded-full" style={{ backgroundColor: shirtColor, border: "1px solid #ccc" }}></div>
+                Pick Color
+              </button>
+              <button
+                onClick={() => setCurrentStep(3)}
+                className="flex-1 flex items-center justify-center gap-2 py-3 bg-white border-2 border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50"
+              >
+                <span>👕</span>
+                Switch Product
+              </button>
             </div>
           </div>
         </div>
