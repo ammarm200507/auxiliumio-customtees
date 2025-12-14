@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #0a0d14;
+    --bg-card: rgba(20, 25, 35, 0.85);
+    --text-primary: #f5f8fc;
+    --text-secondary: #c2c8d6;
+    --text-muted: #97a1b5;
+  }
+  
+  body {
+    background-color: #0a0d14;
+    color: #f5f8fc;
+    font-family: 'Inter', 'Source Sans Pro', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
