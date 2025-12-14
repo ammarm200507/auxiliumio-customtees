@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./index.css";
+import { generateAIDesigns } from "./services/aiGenerator";
 
 // Modern AI T-Shirt Designer - Step-by-Step Interface
 function AppMVP() {
@@ -88,7 +89,7 @@ function AppMVP() {
     return (getUnitPrice() * quantity).toFixed(2);
   };
 
-  // Generate designs
+  // Generate designs using AI
   const generateDesigns = async () => {
     if (!prompt.trim()) {
       alert("Please enter a design description");
@@ -98,35 +99,17 @@ function AppMVP() {
     setLoading(true);
     setGeneratedDesigns([]);
     
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    const designs = [];
-    const styleVariations = ["Minimal", "Bold", "Vintage", "Modern"];
-    const colorSchemes = [
-      ["#00e0ff", "#8b5cf6"],
-      ["#ff6b6b", "#4ecdc4"],
-      ["#feca57", "#ff6348"],
-      ["#5f27cd", "#00d2d3"],
-    ];
-    
-    const placeholderImages = colorSchemes.map((colors, i) => 
-      `https://via.placeholder.com/400x400/${colors[0].replace('#', '')}/${colors[1].replace('#', '')}?text=${encodeURIComponent(prompt.split(' ').slice(0, 2).join('+'))}`
-    );
-
-    for (let i = 0; i < 4; i++) {
-      designs.push({
-        id: Date.now() + i,
-        prompt: prompt,
-        style: styleVariations[i],
-        colors: colorSchemes[i],
-        imageUrl: placeholderImages[i],
-        previewText: prompt.split(" ").slice(0, 3).join(" ").toUpperCase(),
-      });
+    try {
+      // Call AI generation service
+      const designs = await generateAIDesigns(prompt, 4);
+      setGeneratedDesigns(designs);
+      setCurrentStep(2); // Move to Design step
+    } catch (error) {
+      console.error("Error generating designs:", error);
+      alert("Failed to generate designs. Please try again.");
+    } finally {
+      setLoading(false);
     }
-
-    setGeneratedDesigns(designs);
-    setLoading(false);
-    setCurrentStep(2); // Move to Design step
   };
 
   const selectDesign = (design) => {
