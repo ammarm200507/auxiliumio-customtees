@@ -1,7 +1,7 @@
 // AI Image Generation Service
 // For production, these API calls should go through a backend proxy for security
 
-const API_ENDPOINT = import.meta.env.VITE_AI_API_ENDPOINT || '/api/generate-design';
+const API_ENDPOINT = import.meta.env.VITE_AI_API_ENDPOINT || 'http://localhost:3001/api/generate-design';
 
 /**
  * Generate AI design images based on user prompt
@@ -195,6 +195,13 @@ async function generateImageURL(prompt, colors) {
  * Create a gradient placeholder image
  */
 function createGradientPlaceholder(prompt, colors) {
+  // Handle gradient:// URLs from backend
+  if (typeof prompt === 'string' && prompt.startsWith('gradient://')) {
+    const parts = prompt.replace('gradient://', '').split('/');
+    colors = [parts[0], parts[1]];
+    prompt = decodeURIComponent(parts[2] || '');
+  }
+  
   // Create a canvas-based gradient image
   const canvas = document.createElement('canvas');
   canvas.width = 512;
@@ -214,8 +221,10 @@ function createGradientPlaceholder(prompt, colors) {
   ctx.font = 'bold 32px Inter, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  const words = prompt.split(' ').slice(0, 3).join(' ');
-  ctx.fillText(words.toUpperCase(), canvas.width / 2, canvas.height / 2);
+  const words = (prompt || '').split(' ').slice(0, 3).join(' ');
+  if (words) {
+    ctx.fillText(words.toUpperCase(), canvas.width / 2, canvas.height / 2);
+  }
   
   return canvas.toDataURL('image/png');
 }
