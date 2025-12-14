@@ -1,117 +1,121 @@
-# ✅ Proposal Template System - Setup Complete!
+# ✅ Setup Complete!
 
-Your custom tees widget now supports multiple proposals using the same template. Here's what was created:
+Your AI T-Shirt Designer is ready to use! Here's what's been set up:
 
-## 🎯 What Was Built
+## 🎯 What's Working
 
-1. **Configuration System**
-   - Proposal data is now stored in JSON config files
-   - Easy to create new proposals by adding config files
-   - Switch between proposals via URL parameters
+1. **Frontend** - Modern React app with Tailwind CSS
+2. **Backend API** - Node.js/Express server for AI generation
+3. **Integration** - Frontend connected to backend
 
-2. **Two Proposal Configs Created**
-   - `weprint-custom-tees.json` - Your original proposal
-   - `example-ecommerce-platform.json` - Example alternative proposal
+## 🚀 How to Run
 
-3. **Config Loader**
-   - `proposalConfig.js` - Handles loading and switching proposals
-   - Supports URL parameters: `?proposal=proposal-id`
+### Option 1: Run Everything Together (Easiest)
 
-4. **Refactored Widget**
-   - `App.jsx` now reads from config files
-   - Same beautiful template, different content
-
-5. **Documentation**
-   - `PROPOSAL_TEMPLATE_GUIDE.md` - Complete usage guide
-   - `SETUP_COMPLETE.md` - This file
-
-## 🚀 How to Use
-
-### View Current Proposal (Default)
-```
-/proposals/customtees
-```
-Shows the weprint-custom-tees proposal
-
-### Switch to Example Proposal
-```
-/proposals/customtees?proposal=example-ecommerce-platform
+```bash
+npm run dev:all
 ```
 
-### Create a New Proposal
+This starts both frontend and backend at the same time.
 
-1. **Copy an existing config:**
-   ```bash
-   cp src/config/weprint-custom-tees.json src/config/my-new-proposal.json
+### Option 2: Run Separately
+
+**Terminal 1 - Backend:**
+```bash
+npm run server:dev
+```
+
+**Terminal 2 - Frontend:**
+```bash
+npm run dev
+```
+
+Then visit: `http://localhost:5173/mvp`
+
+## 🔑 Adding AI API Keys (Optional but Recommended)
+
+To generate **real AI images**, add an API key to `server/.env`:
+
+### Option 1: Hugging Face (FREE - Easiest)
+
+1. Go to: https://huggingface.co/settings/tokens
+2. Create a token (free)
+3. Open `server/.env` and add:
+   ```
+   HF_API_KEY=your_token_here
    ```
 
-2. **Edit the JSON file** with your proposal content
+### Option 2: Replicate (Best Quality)
 
-3. **Register it in `src/config/proposalConfig.js`:**
-   ```javascript
-   import myNewProposal from './my-new-proposal.json';
-   
-   const PROPOSAL_CONFIGS = {
-     'weprint-custom-tees': weprintConfig,
-     'example-ecommerce-platform': exampleEcommerceConfig,
-     'my-new-proposal': myNewProposal, // Add this
-   };
+1. Go to: https://replicate.com/account/api-tokens
+2. Get your token
+3. Open `server/.env` and add:
+   ```
+   REPLICATE_API_TOKEN=your_token_here
    ```
 
-4. **Access it:**
+### Option 3: OpenAI DALL-E
+
+1. Go to: https://platform.openai.com/api-keys
+2. Get your API key
+3. Open `server/.env` and add:
    ```
-   /proposals/customtees?proposal=my-new-proposal
+   OPENAI_API_KEY=your_key_here
    ```
 
-## 📁 File Structure
+**After adding a key, restart the server!**
+
+## ⚠️ Without API Keys
+
+The app will still work! It uses gradient placeholders as fallback. You'll see:
+- Design generation still works
+- Style variations (Minimal, Bold, Vintage, Modern)
+- Full functionality, just with placeholder images instead of AI-generated ones
+
+## 📁 Project Structure
 
 ```
-src/
-├── config/
-│   ├── proposalConfig.js              # Config loader
-│   ├── weprint-custom-tees.json      # Original proposal
-│   └── example-ecommerce-platform.json # Example proposal
-├── App.jsx                            # Widget (now uses config)
-└── App.css                            # Styles (unchanged)
-
-PROPOSAL_TEMPLATE_GUIDE.md            # Complete guide
+customtees widget/
+├── src/
+│   ├── AppMVP.jsx          # Main app component
+│   └── services/
+│       └── aiGenerator.js  # Frontend AI service
+├── server/
+│   ├── index.js            # Backend API server
+│   ├── services/
+│   │   └── aiService.js    # AI generation logic
+│   ├── .env                # API keys (not in git)
+│   └── package.json        # Backend dependencies
+└── package.json            # Frontend dependencies
 ```
 
-## ✨ Key Features
+## 🎨 Using the App
 
-- **Same Hosting**: All proposals use the same widget/hosting structure
-- **Easy Creation**: Just add a JSON file and register it
-- **URL-Based Switching**: Switch proposals via URL parameters
-- **Same Template**: All proposals use the same beautiful design
-- **Code Ownership**: Everything is in your codebase
+1. **Step 1: Upload** - Enter your design idea and click "Generate Designs"
+2. **Step 2: Design** - Select your favorite design
+3. **Step 3: Products** - Choose shirt type
+4. **Step 4: Sizes** - Select size and quantity
 
-## 🔧 Technical Details
+## 🐛 Troubleshooting
 
-- **Config Format**: JSON files following the schema in `PROPOSAL_TEMPLATE_GUIDE.md`
-- **Default Proposal**: `weprint-custom-tees` (set in `proposalConfig.js`)
-- **URL Parameter**: `?proposal=proposal-id` to switch
-- **No Breaking Changes**: Original proposal still works as before
+**Backend won't start:**
+- Make sure you ran `cd server && npm install`
+- Check that port 3001 isn't already in use
 
-## 📚 Next Steps
+**Frontend can't connect to backend:**
+- Make sure backend is running on port 3001
+- Check browser console for errors
 
-1. **Test the system:**
-   - View default: `/proposals/customtees`
-   - View example: `/proposals/customtees?proposal=example-ecommerce-platform`
+**No images generating:**
+- Check if API key is set in `server/.env`
+- Restart the server after adding keys
+- Check server logs for API errors
 
-2. **Create your first new proposal:**
-   - Follow steps in "Create a New Proposal" above
-   - Reference `PROPOSAL_TEMPLATE_GUIDE.md` for schema details
+## 📝 Next Steps
 
-3. **Customize as needed:**
-   - Modify config files for content changes
-   - Update `App.jsx`/`App.css` for design changes (affects all proposals)
+1. Test the app: `npm run dev:all`
+2. (Optional) Add an API key for real AI images
+3. Customize designs, colors, pricing as needed
+4. Deploy to production when ready!
 
-## 🎉 You're All Set!
-
-The template system is ready to use. You can now create unlimited proposals using the same widget structure. Each proposal is just a JSON config file away!
-
----
-
-**Questions?** Refer to `PROPOSAL_TEMPLATE_GUIDE.md` for detailed documentation.
-
-
+Everything is set up and ready to go! 🎉
